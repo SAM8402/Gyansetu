@@ -30,8 +30,8 @@ class GapAnalyzerService:
         for c in knowledge.get("common_misconceptions", []):
             concepts_text += f"- Misconception: {c.get('misconception')} → Truth: {c.get('correct_understanding')}\n"
         prompt = GAP_PROMPT.format(
-            subject=config.get("_subject", "General"), topic=config.get("_topic", "General"),
-            grade=config.get("_grade", "Unknown"),
+            subject=config.get("subject", "General"), topic=config.get("topic", "General"),
+            grade=config.get("grade", "Unknown"),
             concepts=concepts_text[:2000] or "Standard educational concepts",
             objectives="\n".join(f"- {o}" for o in knowledge.get("learning_objectives", []))
         )

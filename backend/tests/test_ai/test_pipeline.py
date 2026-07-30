@@ -37,7 +37,7 @@ class TestBuildPipeline:
             "knowledge_extraction", "teaching_planning",
             "content_generation", "activity_generation",
             "assessment_generation", "gap_analysis",
-            "validation", "publishing",
+            "tkp_assembly", "validation", "publishing",
         }
         assert compiled_nodes == expected
 
@@ -46,34 +46,34 @@ class TestBuildPipeline:
 async def test_full_pipeline_runs():
     """Integration test: mock all service dependencies and run the pipeline."""
     mock_patches = [
-        patch("app.services.document_intel:DocumentIntelService", return_value=AsyncMock(
+        patch("app.services.document_intel.DocumentIntelService", return_value=AsyncMock(
             process=AsyncMock(return_value={"text": "doc content"})
         )),
-        patch("app.services.edu_classifier:EduClassifierService", return_value=AsyncMock(
+        patch("app.services.edu_classifier.EduClassifierService", return_value=AsyncMock(
             process=AsyncMock(return_value={"subject": "math", "level": "high-school"})
         )),
-        patch("app.services.knowledge_extractor:KnowledgeExtractorService", return_value=AsyncMock(
+        patch("app.services.knowledge_extractor.KnowledgeExtractorService", return_value=AsyncMock(
             process=AsyncMock(return_value={"concepts": ["algebra"]})
         )),
-        patch("app.services.teaching_planner:TeachingPlannerService", return_value=AsyncMock(
+        patch("app.services.teaching_planner.TeachingPlannerService", return_value=AsyncMock(
             process=AsyncMock(return_value={"plan": "teach algebra"})
         )),
-        patch("app.services.content_generator:ContentGeneratorService", return_value=AsyncMock(
+        patch("app.services.content_generator.ContentGeneratorService", return_value=AsyncMock(
             process=AsyncMock(return_value={"slides": ["intro"]})
         )),
-        patch("app.services.activity_generator:ActivityGeneratorService", return_value=AsyncMock(
+        patch("app.services.activity_generator.ActivityGeneratorService", return_value=AsyncMock(
             process=AsyncMock(return_value={"exercises": ["problem set"]})
         )),
-        patch("app.services.assessment_generator:AssessmentGeneratorService", return_value=AsyncMock(
+        patch("app.services.assessment_generator.AssessmentGeneratorService", return_value=AsyncMock(
             process=AsyncMock(return_value={"quiz": ["q1"]})
         )),
-        patch("app.services.gap_analyzer:GapAnalyzerService", return_value=AsyncMock(
+        patch("app.services.gap_analyzer.GapAnalyzerService", return_value=AsyncMock(
             process=AsyncMock(return_value={"missing": ["prerequisites"]})
         )),
-        patch("app.services.validator:ValidatorService", return_value=AsyncMock(
+        patch("app.services.validator.ValidatorService", return_value=AsyncMock(
             process=AsyncMock(return_value={"score": 0.85})
         )),
-        patch("app.services.publisher:PublisherService", return_value=AsyncMock(
+        patch("app.services.publisher.PublisherService", return_value=AsyncMock(
             process=AsyncMock(return_value={"tkp_path": "/tmp/tkp.json"})
         )),
     ]
@@ -87,7 +87,8 @@ async def test_full_pipeline_runs():
 
         result = await pipeline.ainvoke(state)
 
-        assert result["current_stage"] == 10
+        assert result["current_stage"] == 11
+        assert result.get("tkp", {}).get("metadata", {}).get("subject") == "math"
         assert result["result"]["tkp_path"] == "/tmp/tkp.json"
         assert result["doc_data"]["text"] == "doc content"
         assert result["metadata"]["subject"] == "math"

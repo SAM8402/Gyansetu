@@ -53,8 +53,9 @@ class DocumentIntelService:
                 figures.append({"caption": "", "page": page_num + 1})
         eq_pattern = r'\$[^$]+\$|\\\[.*?\\\]|\\\(.*?\\\)'
         equations = re.findall(eq_pattern, raw_text)
+        page_count = len(doc)
         doc.close()
-        return {"raw_text": raw_text, "sections": sections, "tables": tables, "figures": figures, "equations": equations, "metadata": {"page_count": len(doc), "word_count": len(raw_text.split()), "file_type": "pdf"}}
+        return {"raw_text": raw_text, "sections": sections, "tables": tables, "figures": figures, "equations": equations, "metadata": {"page_count": page_count, "word_count": len(raw_text.split()), "file_type": "pdf"}}
 
     def _parse_docx(self, path: Path) -> dict:
         doc = DocxDocument(path)

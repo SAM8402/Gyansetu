@@ -54,7 +54,7 @@ async def upload_document(
         config=config,
     )
     db.add(job)
-    await db.flush()
+    await db.commit()
     logger.info("job_created", job_id=job_id, file=file.filename)
 
     # Start the pipeline as a background task

@@ -16,7 +16,7 @@ async def test_run_pipeline_success():
 
     mock_pipeline = AsyncMock()
     mock_pipeline.ainvoke.return_value = {
-        "current_stage": 10,
+        "current_stage": 11,
         "result": {"tkp_path": "/tmp/test.tkp"},
     }
 
@@ -30,7 +30,7 @@ async def test_run_pipeline_success():
     mock_pipeline.ainvoke.assert_awaited_once()
     assert mock_job.status == "completed"
     assert mock_job.tkp_path == "/tmp/test.tkp"
-    assert mock_job.current_stage == 10
+    assert mock_job.current_stage == 11
     mock_cache.publish_progress.assert_awaited_once()
     mock_cache.publish_complete.assert_awaited_once_with("test-id", "/api/jobs/test-id/tkp")
 
@@ -71,7 +71,7 @@ async def test_run_pipeline_handles_missing_job():
 
     mock_pipeline = AsyncMock()
     mock_pipeline.ainvoke.return_value = {
-        "current_stage": 10,
+        "current_stage": 11,
         "result": {"tkp_path": "/tmp/test.tkp"},
     }
 

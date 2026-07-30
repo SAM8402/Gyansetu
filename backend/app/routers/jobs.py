@@ -90,11 +90,31 @@ async def delete_job(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
+    from pathlib import Path
+    from app.services.cache_service import cache_service
+
     result = await db.execute(
         select(Job).where(Job.id == job_id, Job.user_id == current_user.id)
     )
     job = result.scalar_one_or_none()
     if not job:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
+    # Clean up uploaded raw file and output TKP file if present
+    if job.file_path and Path(job.file_path).exists():
+        try:
+            Path(job.file_path).unlink()
+        except Exception:
+            pass
+    if job.tkp_path and Path(job.tkp_path).exists():
+        try:
+            Path(job.tkp_path).unlink()
+        except Exception:
+            pass
+
     await db.delete(job)
-    return {"message": "Job deleted"}
+    await db.commit()
+    await cache_service.invalidate_job_cache(job_id)
+
+    return {"message": "Job deleted successfully"}
+

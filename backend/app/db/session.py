@@ -1,4 +1,4 @@
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -31,10 +31,10 @@ async def init_db():
 
     Idempotent — safe to call on every startup.
     """
-    from app.db.base import Base
+    import app.models.job
+    import app.models.llm_cache
     import app.models.user  # noqa: F401
-    import app.models.job  # noqa: F401
-    import app.models.llm_cache  # noqa: F401
+    from app.db.base import Base
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

@@ -3,16 +3,16 @@ from app.ai.embeddings import chunk_document, HybridRetriever
 from app.core.logging_config import logger
 
 EXTRACTION_PROMPT = """Based on the following educational document content, extract structured knowledge. Return ONLY valid JSON:
-{
+{{
   "learning_objectives": ["..."],
   "prerequisites": ["..."],
-  "concepts": [{"name": "...", "definition": "...", "explanation": "...", "examples": ["..."], "source_reference": "..."}],
-  "definitions": [{"term": "...", "definition": "..."}],
-  "formulae": [{"formula": "...", "description": "..."}],
+  "concepts": [{{"name": "...", "definition": "...", "explanation": "...", "examples": ["..."], "source_reference": "..."}}],
+  "definitions": [{{"term": "...", "definition": "..."}}],
+  "formulae": [{{"formula": "...", "description": "..."}}],
   "keywords": ["..."],
   "applications": ["..."],
-  "common_misconceptions": [{"misconception": "...", "correct_understanding": "...", "why_students_think_this": "..."}]
-}
+  "common_misconceptions": [{{"misconception": "...", "correct_understanding": "...", "why_students_think_this": "..."}}]
+}}
 
 Document content:
 {context}

@@ -1,7 +1,7 @@
 from app.ai.llm_client import generate_json
 
 CLASSIFICATION_PROMPT = """Analyze the following educational document and classify it. Return ONLY valid JSON:
-{
+{{
   "subject": "...",
   "grade": "...",
   "difficulty": "beginner|intermediate|advanced",
@@ -10,7 +10,7 @@ CLASSIFICATION_PROMPT = """Analyze the following educational document and classi
   "category": "STEM|Humanities|Arts|Commerce",
   "language": "...",
   "board_alignment": "CBSE|ICSE|Common Core|General"
-}
+}}
 
 Document preview:
 {text}

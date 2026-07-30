@@ -2,12 +2,14 @@
   <div>
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-xl font-semibold">{{ tkp?.metadata?.topic || 'Results' }}</h1>
-      <a v-if="tkp" :href="`/api/jobs/${$route.params.id}/tkp`" class="text-sm px-4 py-1.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 inline-block" download>Download JSON</a>
+      <div class="flex items-center gap-3">
+        <a v-if="tkp" :href="`/api/jobs/${$route.params.id}/tkp`" class="text-sm px-4 py-1.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 inline-block" download>Download JSON</a>
+        <button @click="handleDelete" class="text-sm px-4 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 inline-block transition">Delete Document</button>
+      </div>
     </div>
 
     <div v-if="loading" class="border border-gray-200 rounded-lg p-6"><LoadingSkeleton height="240px" /></div>
     <div v-else-if="!tkp" class="border border-gray-200 rounded-lg p-12 text-center text-gray-400"><p>No results yet.</p></div>
-
     <template v-else>
       <div class="flex gap-1 mb-4 flex-wrap">
         <button v-for="tab in tabs" :key="tab.key" :class="['text-sm px-3.5 py-1.5 rounded-lg transition', tabCls(tab.key)]" @click="activeTab = tab.key">{{ tab.label }}</button>
@@ -69,11 +71,13 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useJobsStore } from '../stores/jobs'
 import LoadingSkeleton from '../components/common/LoadingSkeleton.vue'
+
 const route = useRoute()
-const { fetchJob } = useJobsStore()
+const router = useRouter()
+const { fetchJob, removeJob } = useJobsStore()
 const tkp = ref(null), loading = ref(true), activeTab = ref('overview')
 const tabs = [
   { key: 'overview', label: 'Overview' }, { key: 'plans', label: 'Lesson Plans' },
@@ -82,6 +86,14 @@ const tabs = [
 ]
 function tabCls(key) { return activeTab.value === key ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }
 function diffCls(d) { return { easy: 'bg-green-100 text-green-700', medium: 'bg-yellow-100 text-yellow-700', hard: 'bg-red-100 text-red-700' }[d] || '' }
+
+async function handleDelete() {
+  if (confirm('Are you sure you want to delete this document?')) {
+    await removeJob(route.params.id)
+    router.push('/')
+  }
+}
+
 onMounted(async () => {
   try {
     const job = await fetchJob(route.params.id)

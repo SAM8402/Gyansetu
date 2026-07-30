@@ -26,11 +26,13 @@ class ActivityGeneratorService:
     async def process(self, teaching_plan: dict, knowledge: dict, content: dict, config: dict) -> dict:
         periods = teaching_plan.get("periods", [])
         language = config.get("target_language", "English")
+        subject = config.get("subject", "General")
+        topic = config.get("topic", "General")
 
         async def generate_activities(period: dict) -> dict:
             prompt = ACTIVITY_PROMPT.format(
                 period_number=period["period_number"], title=period.get("title", ""),
-                subject="General", topic="General", duration=period.get("duration_minutes", 40),
+                subject=subject, topic=topic, duration=period.get("duration_minutes", 40),
                 language=language
             )
             return await generate_json(prompt)

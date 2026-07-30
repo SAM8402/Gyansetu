@@ -1,5 +1,4 @@
 import logging
-import os
 from pathlib import Path
 
 import structlog
@@ -21,11 +20,14 @@ def setup_logging() -> structlog.stdlib.BoundLogger:
     structlog.configure(
         processors=[
             structlog.stdlib.add_log_level,
-            structlog.dev.ConsoleRenderer(),
+            structlog.processors.TimeStamper(fmt="iso"),
+            structlog.processors.KeyValueRenderer(
+                key_order=["timestamp", "level", "event"],
+            ),
         ],
         wrapper_class=structlog.stdlib.BoundLogger,
         context_class=dict,
-        logger_factory=structlog.PrintLoggerFactory(),
+        logger_factory=structlog.stdlib.LoggerFactory(),
         cache_logger_on_first_use=True,
     )
 

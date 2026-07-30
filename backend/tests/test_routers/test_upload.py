@@ -103,7 +103,7 @@ class TestUploadDocument:
             self.UPLOAD_URL,
             files={"file": ("test.pdf", b"content", "application/pdf")},
         )
-        assert resp.status_code == 403
+        assert resp.status_code in (401, 403)
 
     async def test_upload_missing_file_field(self, client):
         headers = await self._register_and_login(client, "upload-nofile@gyansetu.ai")

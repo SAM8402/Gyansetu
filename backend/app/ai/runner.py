@@ -36,7 +36,7 @@ async def run_pipeline(job_id: str, file_path: str, config: dict):
             job = result.scalar_one_or_none()
             if job:
                 job.status = "completed"
-                job.current_stage = 10
+                job.current_stage = 11
                 job.tkp_path = final_state.get("result", {}).get("tkp_path", "")
                 job.completed_at = datetime.now(timezone.utc)
                 await db.commit()

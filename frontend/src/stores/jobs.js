@@ -28,20 +28,45 @@ export const useJobsStore = defineStore('jobs', {
       this.jobs = this.jobs.filter(j => j.id !== id)
     },
     connectSSE(jobId) {
+      this.sseStatus = { stage_number: 1, progress: 10, message: 'Processing started...', done: false }
       const token = localStorage.getItem('teacher_ai_token')
       const es = new EventSource(`/api/stream/${jobId}?token=${token}`)
+      
       es.addEventListener('progress', (e) => {
-        this.sseStatus = JSON.parse(e.data)
+        try {
+          const data = JSON.parse(e.data)
+          this.sseStatus = { ...data, done: false }
+        } catch (err) {}
       })
+      
       es.addEventListener('complete', (e) => {
-        this.sseStatus = JSON.parse(e.data)
-        this.sseStatus.done = true
+        try {
+          const data = JSON.parse(e.data)
+          this.sseStatus = { ...data, done: true, tkp_url: data.tkp_url || `/api/jobs/${jobId}/tkp` }
+        } catch (err) {
+          this.sseStatus = { done: true, tkp_url: `/api/jobs/${jobId}/tkp` }
+        }
         es.close()
         this.fetchJobs()
       })
-      es.addEventListener('error', (e) => {
-        this.sseStatus = { error: 'Pipeline error', done: true }
-        es.close()
+      
+      es.addEventListener('error', async (e) => {
+        if (this.sseStatus?.done) {
+          es.close()
+          return
+        }
+        try {
+          const job = await this.fetchJob(jobId)
+          if (job.status === 'completed') {
+            this.sseStatus = { done: true, tkp_url: `/api/jobs/${jobId}/tkp` }
+            es.close()
+            return
+          } else if (job.status === 'failed') {
+            this.sseStatus = { error: job.error_message || 'Pipeline failed', done: true }
+            es.close()
+            return
+          }
+        } catch (err) {}
       })
       return es
     },

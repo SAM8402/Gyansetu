@@ -1,9 +1,9 @@
 from app.ai.llm_client import generate_json
 
 PLANNER_PROMPT = """Create a multi-period teaching plan based on the following knowledge. Return ONLY valid JSON:
-{
+{{
   "periods": [
-    {
+    {{
       "period_number": 1,
       "title": "...",
       "duration_minutes": {duration},
@@ -11,9 +11,9 @@ PLANNER_PROMPT = """Create a multi-period teaching plan based on the following k
       "key_concepts": ["..."],
       "activities_summary": "...",
       "assessment_strategy": "..."
-    }
+    }}
   ]
-}
+}}
 
 Knowledge:
 - Subject: {subject}

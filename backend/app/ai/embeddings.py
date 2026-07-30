@@ -1,35 +1,31 @@
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.schema import Document
+from langchain_core.documents import Document
+from langchain_core.embeddings import Embeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from rank_bm25 import BM25Okapi
+
 from app.core.config import settings
 from app.core.logging_config import logger
 
 
-def get_embeddings() -> GoogleGenerativeAIEmbeddings:
-    """Initialise and return the Google Generative AI embedding model.
+class LocalEmbeddings(Embeddings):
+    def __init__(self):
+        from langchain_community.embeddings import HuggingFaceEmbeddings
+        logger.info("using_local_embedding_model", model="all-MiniLM-L6-v2")
+        self._ef = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
-    Returns:
-        A GoogleGenerativeAIEmbeddings instance.
-    """
-    api_keys = settings.api_keys
-    return GoogleGenerativeAIEmbeddings(
-        model="models/embedding-001",
-        google_api_key=api_keys[0] if api_keys else None,
-    )
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
+        return self._ef.embed_documents(texts)
+
+    def embed_query(self, text: str) -> list[float]:
+        return self._ef.embed_query(text)
 
 
-def chunk_document(text: str, metadata: dict = None) -> list[Document]:
-    """Split a document into overlapping chunks for downstream processing.
+def get_embeddings() -> Embeddings:
+    return LocalEmbeddings()
 
-    Args:
-        text: Raw document text.
-        metadata: Optional dictionary of metadata attached to every chunk.
 
-    Returns:
-        List of Document chunks.
-    """
+def chunk_document(text: str, metadata: dict | None = None) -> list[Document]:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=settings.CHUNK_SIZE,
         chunk_overlap=settings.CHUNK_OVERLAP,
@@ -40,29 +36,13 @@ def chunk_document(text: str, metadata: dict = None) -> list[Document]:
 
 
 class HybridRetriever:
-    """Retriever that fuses dense vector search with sparse BM25 scoring."""
-
     def __init__(self, docs: list[Document]):
-        """Initialise the retriever with a corpus of documents.
-
-        Args:
-            docs: Source document list.
-        """
         self.embeddings = get_embeddings()
-        self.vectorstore = Chroma.from_documents(docs, self.embeddings)
+        self.vectorstore = Chroma.from_documents(docs, self.embeddings, persist_directory=settings.CHROMA_PERSIST_DIR)
         self.bm25 = BM25Okapi([d.page_content.split() for d in docs])
         self.docs = docs
 
     def hybrid_search(self, query: str, k: int = 5) -> list[Document]:
-        """Run a hybrid search combining vector similarity and BM25 scores.
-
-        Args:
-            query: Natural-language search query.
-            k: Number of top results to return.
-
-        Returns:
-            Deduplicated list of Documents.
-        """
         vector_results = self.vectorstore.similarity_search(query, k=k)
 
         bm25_scores = self.bm25.get_scores(query.split())
@@ -80,13 +60,4 @@ class HybridRetriever:
         return merged[:k]
 
     async def ahybrid_search(self, query: str, k: int = 5) -> list[Document]:
-        """Async wrapper around :meth:`hybrid_search`.
-
-        Args:
-            query: Natural-language search query.
-            k: Number of top results to return.
-
-        Returns:
-            Deduplicated list of Documents.
-        """
         return self.hybrid_search(query, k)

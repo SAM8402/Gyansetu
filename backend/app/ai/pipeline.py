@@ -1,6 +1,19 @@
+import asyncio
+from datetime import datetime, timezone
 from typing import TypedDict, Optional
 from langgraph.graph import StateGraph, END
 from app.core.logging_config import logger
+
+from app.services.document_intel import DocumentIntelService
+from app.services.edu_classifier import EduClassifierService
+from app.services.knowledge_extractor import KnowledgeExtractorService
+from app.services.teaching_planner import TeachingPlannerService
+from app.services.content_generator import ContentGeneratorService
+from app.services.activity_generator import ActivityGeneratorService
+from app.services.assessment_generator import AssessmentGeneratorService
+from app.services.gap_analyzer import GapAnalyzerService
+from app.services.validator import ValidatorService
+from app.services.publisher import PublisherService
 
 
 class PipelineState(TypedDict):
@@ -58,36 +71,28 @@ def create_initial_state() -> PipelineState:
 async def document_intelligence_node(state: PipelineState) -> dict:
     """Extract raw text and structure from the uploaded document."""
     from app.services.document_intel import DocumentIntelService
-
-    service = DocumentIntelService()
-    result = await service.process(state["file_path"])
+    result = await DocumentIntelService().process(state["file_path"])
     return {"doc_data": result, "current_stage": 1}
 
 
 async def educational_classification_node(state: PipelineState) -> dict:
     """Classify the document by subject, audience, and educational level."""
     from app.services.edu_classifier import EduClassifierService
-
-    service = EduClassifierService()
-    result = await service.process(state["doc_data"], state["config"])
+    result = await EduClassifierService().process(state["doc_data"], state["config"])
     return {"metadata": result, "current_stage": 2}
 
 
 async def knowledge_extraction_node(state: PipelineState) -> dict:
     """Extract structured knowledge graph from the document content."""
     from app.services.knowledge_extractor import KnowledgeExtractorService
-
-    service = KnowledgeExtractorService()
-    result = await service.process(state["doc_data"], state["metadata"])
+    result = await KnowledgeExtractorService().process(state["doc_data"], state["metadata"])
     return {"knowledge": result, "current_stage": 3}
 
 
 async def teaching_planning_node(state: PipelineState) -> dict:
     """Generate a high-level teaching plan based on extracted knowledge."""
     from app.services.teaching_planner import TeachingPlannerService
-
-    service = TeachingPlannerService()
-    result = await service.process(
+    result = await TeachingPlannerService().process(
         state["knowledge"], state["metadata"], state["config"]
     )
     return {"teaching_plan": result, "current_stage": 4}
@@ -96,9 +101,7 @@ async def teaching_planning_node(state: PipelineState) -> dict:
 async def content_generation_node(state: PipelineState) -> dict:
     """Produce lecture-ready content aligned with the teaching plan."""
     from app.services.content_generator import ContentGeneratorService
-
-    service = ContentGeneratorService()
-    result = await service.process(
+    result = await ContentGeneratorService().process(
         state["teaching_plan"],
         state["knowledge"],
         state["metadata"],
@@ -110,9 +113,7 @@ async def content_generation_node(state: PipelineState) -> dict:
 async def activity_generation_node(state: PipelineState) -> dict:
     """Create interactive classroom activities and exercises."""
     from app.services.activity_generator import ActivityGeneratorService
-
-    service = ActivityGeneratorService()
-    result = await service.process(
+    result = await ActivityGeneratorService().process(
         state["teaching_plan"],
         state["knowledge"],
         state["content"],
@@ -124,9 +125,7 @@ async def activity_generation_node(state: PipelineState) -> dict:
 async def assessment_generation_node(state: PipelineState) -> dict:
     """Build assessments (quizzes, assignments) from knowledge and metadata."""
     from app.services.assessment_generator import AssessmentGeneratorService
-
-    service = AssessmentGeneratorService()
-    result = await service.process(
+    result = await AssessmentGeneratorService().process(
         state["knowledge"], state["metadata"], state["config"]
     )
     return {"assessments": result, "current_stage": 7}
@@ -135,28 +134,98 @@ async def assessment_generation_node(state: PipelineState) -> dict:
 async def gap_analysis_node(state: PipelineState) -> dict:
     """Identify knowledge gaps and missing prerequisites."""
     from app.services.gap_analyzer import GapAnalyzerService
-
-    service = GapAnalyzerService()
-    result = await service.process(state["knowledge"], state["config"])
+    result = await GapAnalyzerService().process(
+        state["knowledge"],
+        {**state["config"], **state.get("metadata", {})},
+    )
     return {"gaps": result, "current_stage": 8}
+
+
+async def parallel_generation_node(state: PipelineState) -> dict:
+    """Execute Content, Assessment, and Gap Analysis in parallel for maximum performance."""
+    from app.services.content_generator import ContentGeneratorService
+    from app.services.activity_generator import ActivityGeneratorService
+    from app.services.assessment_generator import AssessmentGeneratorService
+    from app.services.gap_analyzer import GapAnalyzerService
+
+    tp = state["teaching_plan"]
+    kn = state["knowledge"]
+    md = state.get("metadata", {})
+    cfg = state["config"]
+
+    # Run Content Gen, Assessment Gen, and Gap Analysis concurrently
+    c_task = ContentGeneratorService().process(tp, kn, md, cfg)
+    asm_task = AssessmentGeneratorService().process(kn, md, cfg)
+    gap_task = GapAnalyzerService().process(kn, {**cfg, **md})
+
+    content, assessments, gaps = await asyncio.gather(c_task, asm_task, gap_task)
+    activities = await ActivityGeneratorService().process(tp, kn, content, cfg)
+
+    return {
+        "content": content,
+        "activities": activities,
+        "assessments": assessments,
+        "gaps": gaps,
+        "current_stage": 8,
+    }
+
+
+async def tkp_assembly_node(state: PipelineState) -> dict:
+    """Assemble all individual stage outputs into the final TKP structure."""
+    md = state.get("metadata", {})
+    tp = state.get("teaching_plan", {})
+    ct = state.get("content", {})
+    ac = state.get("activities", {})
+    asm = state.get("assessments", {})
+    ga = state.get("gaps", {})
+
+    if ct.get("periods"):
+        for period in tp.get("periods", []):
+            pn = period["period_number"]
+            matching = [p for p in ct["periods"] if p.get("period_number") == pn]
+            if matching:
+                period.update(matching[0])
+            if ac.get("period_activities", {}).get(pn):
+                period["classroom_activities"] = ac["period_activities"][pn]
+
+    return {
+        "tkp": {
+            "metadata": {
+                "document_title": state.get("file_path", "").split("\\")[-1].split("/")[-1],
+                "subject": md.get("subject", "General"),
+                "grade": md.get("grade", "Unknown"),
+                "difficulty": md.get("difficulty", "intermediate"),
+                "topic": md.get("topic", "General"),
+                "chapter": md.get("chapter", ""),
+                "category": md.get("category", "General"),
+                "language": md.get("language", "English"),
+                "board_alignment": md.get("board_alignment", "General"),
+                "total_periods": len(tp.get("periods", [])),
+                "period_duration_minutes": tp.get("periods", [{}])[0].get("duration_minutes", 40) if tp.get("periods") else 40,
+                "generated_at": datetime.now(timezone.utc).isoformat(),
+            },
+            "knowledge_base": state.get("knowledge", {}),
+            "teaching_plan": tp,
+            "assessments": asm,
+            "learning_gaps": ga.get("learning_gaps", []),
+            "validation_report": {},
+        },
+        "current_stage": 9,
+    }
 
 
 async def validation_node(state: PipelineState) -> dict:
     """Validate the entire pipeline output for consistency and completeness."""
     from app.services.validator import ValidatorService
-
-    service = ValidatorService()
-    result = await service.process(state)
-    return {"validation_report": result, "current_stage": 9}
+    result = await ValidatorService().process(state)
+    return {"validation_report": result, "current_stage": 10}
 
 
 async def publishing_node(state: PipelineState) -> dict:
     """Persist the final output and mark the pipeline as complete."""
     from app.services.publisher import PublisherService
-
-    service = PublisherService()
-    result = await service.process(state)
-    return {"result": result, "current_stage": 10}
+    result = await PublisherService().process(state)
+    return {"result": result, "current_stage": 11}
 
 
 # ---------------------------------------------------------------------------
@@ -166,19 +235,6 @@ async def publishing_node(state: PipelineState) -> dict:
 
 def build_pipeline() -> StateGraph:
     """Assemble and compile the LangGraph pipeline.
-
-    The pipeline executes ten sequential stages:
-
-        1. Document Intelligence
-        2. Educational Classification
-        3. Knowledge Extraction
-        4. Teaching Planning
-        5. Content Generation
-        6. Activity Generation
-        7. Assessment Generation
-        8. Gap Analysis
-        9. Validation
-        10. Publishing
 
     Returns:
         A compiled ``StateGraph`` ready for invocation.
@@ -194,13 +250,14 @@ def build_pipeline() -> StateGraph:
     graph.add_node("activity_generation", activity_generation_node)
     graph.add_node("assessment_generation", assessment_generation_node)
     graph.add_node("gap_analysis", gap_analysis_node)
+    graph.add_node("tkp_assembly", tkp_assembly_node)
     graph.add_node("validation", validation_node)
     graph.add_node("publishing", publishing_node)
 
     # Entry point
     graph.set_entry_point("document_intelligence")
 
-    # Sequential edges (each node feeds the next)
+    # Sequential edges
     graph.add_edge("document_intelligence", "educational_classification")
     graph.add_edge("educational_classification", "knowledge_extraction")
     graph.add_edge("knowledge_extraction", "teaching_planning")
@@ -208,7 +265,8 @@ def build_pipeline() -> StateGraph:
     graph.add_edge("content_generation", "activity_generation")
     graph.add_edge("activity_generation", "assessment_generation")
     graph.add_edge("assessment_generation", "gap_analysis")
-    graph.add_edge("gap_analysis", "validation")
+    graph.add_edge("gap_analysis", "tkp_assembly")
+    graph.add_edge("tkp_assembly", "validation")
     graph.add_edge("validation", "publishing")
     graph.add_edge("publishing", END)
 

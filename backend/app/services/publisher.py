@@ -6,7 +6,9 @@ from app.core.logging_config import logger
 
 class PublisherService:
     async def process(self, state: dict) -> dict:
-        tkp = self._assemble_tkp(state)
+        tkp = state.get("tkp") or self._assemble_tkp(state)
+        vr = state.get("validation_report", {})
+        tkp["validation_report"] = vr
         output_dir = Path(settings.OUTPUT_DIR)
         output_dir.mkdir(parents=True, exist_ok=True)
         filename = f"tkp_{state['job_id']}.json"
@@ -22,7 +24,6 @@ class PublisherService:
         ac = state.get("activities", {})
         asm = state.get("assessments", {})
         ga = state.get("gaps", {})
-        vr = state.get("validation_report", {})
         if ct.get("periods"):
             for period in tp.get("periods", []):
                 pn = period["period_number"]
@@ -50,5 +51,5 @@ class PublisherService:
             "teaching_plan": tp,
             "assessments": asm,
             "learning_gaps": ga.get("learning_gaps", []),
-            "validation_report": vr,
+            "validation_report": {},
         }

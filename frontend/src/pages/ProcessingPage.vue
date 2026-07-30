@@ -16,7 +16,7 @@
       </div>
       <div v-if="sseStatus?.done" class="mt-5">
         <router-link v-if="sseStatus.tkp_url" :to="`/results/${$route.params.id}`" class="bg-blue-600 text-white text-sm font-medium rounded-lg px-4 py-2 hover:bg-blue-700 inline-block">View results</router-link>
-        <p v-else class="text-sm text-gray-400">An error occurred.</p>
+        <p v-else class="text-sm text-red-500 font-medium">{{ sseStatus.error || 'An error occurred during processing.' }}</p>
       </div>
     </div>
   </div>
@@ -24,9 +24,13 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useJobsStore } from '../stores/jobs'
+
 const route = useRoute()
-const { sseStatus, connectSSE } = useJobsStore()
+const jobsStore = useJobsStore()
+const { sseStatus } = storeToRefs(jobsStore)
+const { connectSSE } = jobsStore
 let es = null
 const stages = [
   { num: 1, label: 'Document Intel' }, { num: 2, label: 'Classification' }, { num: 3, label: 'Knowledge Extraction' },
@@ -34,15 +38,15 @@ const stages = [
   { num: 7, label: 'Assessments' }, { num: 8, label: 'Gap Analysis' }, { num: 9, label: 'Validation' }, { num: 10, label: 'Publishing' },
 ]
 function rowClass(num) {
-  if (!sseStatus) return ''
-  const cur = sseStatus.stage_number || 0
+  if (!sseStatus.value) return ''
+  const cur = sseStatus.value.stage_number || 0
   if (num < cur) return 'bg-green-50'
   if (num === cur) return 'bg-blue-50'
   return ''
 }
 function dotClass(num) {
-  if (!sseStatus) return 'bg-gray-300'
-  const cur = sseStatus.stage_number || 0
+  if (!sseStatus.value) return 'bg-gray-300'
+  const cur = sseStatus.value.stage_number || 0
   if (num < cur) return 'bg-green-500'
   if (num === cur) return 'bg-blue-500'
   return 'bg-gray-300'
