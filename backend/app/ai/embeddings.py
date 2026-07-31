@@ -9,9 +9,12 @@ from app.core.logging_config import logger
 
 
 class LocalEmbeddings(Embeddings):
+    provider_name = "local"
+
     def __init__(self):
         try:
             from langchain_community.embeddings import HuggingFaceEmbeddings
+
             logger.info("using_local_embedding_model", model="all-MiniLM-L6-v2")
             self._ef = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         except Exception as e:
@@ -20,10 +23,11 @@ class LocalEmbeddings(Embeddings):
 
     def _hash_embed(self, text: str, dim: int = 384) -> list[float]:
         import hashlib
+
         vec = [0.0] * dim
         words = text.lower().split()
         for w in words:
-            h = int(hashlib.md5(w.encode('utf-8')).hexdigest(), 16)
+            h = int(hashlib.md5(w.encode("utf-8")).hexdigest(), 16)
             idx = h % dim
             val = ((h >> 8) % 200 - 100) / 100.0
             vec[idx] += val
@@ -49,8 +53,71 @@ class LocalEmbeddings(Embeddings):
         return self._hash_embed(text)
 
 
+class GoogleEmbeddings(Embeddings):
+    """Try every configured Google API key, then fall back to the local model."""
+
+    def __init__(self):
+        from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+        self._ef = None
+        self._local = LocalEmbeddings()
+        for key in settings.api_keys:
+            try:
+                ef = GoogleGenerativeAIEmbeddings(
+                    model=settings.GEMINI_EMBEDDING_MODEL,
+                    google_api_key=key,
+                )
+                probe = ef.embed_query("ping")
+                if probe:
+                    self._ef = ef
+                    logger.info(
+                        "using_google_embedding_model",
+                        model=settings.GEMINI_EMBEDDING_MODEL,
+                        key_preview=key[:6],
+                        dim=len(probe),
+                    )
+                    return
+            except Exception as e:
+                logger.warning(
+                    "google_embedding_key_failed",
+                    key_preview=key[:6] if key else "none",
+                    error=str(e)[:200],
+                )
+        logger.warning("google_embedding_unavailable_using_local")
+
+    @property
+    def provider_name(self) -> str:
+        return "google" if self._ef else "local"
+
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
+        if self._ef:
+            try:
+                return self._ef.embed_documents(texts)
+            except Exception as e:
+                logger.warning(
+                    "google_embedding_call_failed_using_local", error=str(e)[:200]
+                )
+        return self._local.embed_documents(texts)
+
+    def embed_query(self, text: str) -> list[float]:
+        if self._ef:
+            try:
+                return self._ef.embed_query(text)
+            except Exception as e:
+                logger.warning(
+                    "google_embedding_call_failed_using_local", error=str(e)[:200]
+                )
+        return self._local.embed_query(text)
+
+
+_embeddings_instance: Embeddings | None = None
+
+
 def get_embeddings() -> Embeddings:
-    return LocalEmbeddings()
+    global _embeddings_instance
+    if _embeddings_instance is None:
+        _embeddings_instance = GoogleEmbeddings()
+    return _embeddings_instance
 
 
 def chunk_document(text: str, metadata: dict | None = None) -> list[Document]:
@@ -66,7 +133,13 @@ def chunk_document(text: str, metadata: dict | None = None) -> list[Document]:
 class HybridRetriever:
     def __init__(self, docs: list[Document]):
         self.embeddings = get_embeddings()
-        self.vectorstore = Chroma.from_documents(docs, self.embeddings, persist_directory=settings.CHROMA_PERSIST_DIR)
+        collection_name = f"hybrid_{getattr(self.embeddings, 'provider_name', 'local')}"
+        self.vectorstore = Chroma.from_documents(
+            docs,
+            self.embeddings,
+            persist_directory=settings.CHROMA_PERSIST_DIR,
+            collection_name=collection_name,
+        )
         self.bm25 = BM25Okapi([d.page_content.split() for d in docs])
         self.docs = docs
 
