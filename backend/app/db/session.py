@@ -50,6 +50,11 @@ async def init_db():
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        try:
+            from sqlalchemy import text
+            await conn.execute(text("ALTER TABLE jobs ADD COLUMN result_json JSON"))
+        except Exception:
+            pass
 
     async with async_session() as db:
         result = await db.execute(select(User).where(User.email == "admin@gyansetu.ai"))
