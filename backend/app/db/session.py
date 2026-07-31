@@ -40,10 +40,26 @@ async def init_db():
 
     Idempotent — safe to call on every startup.
     """
+    import uuid
+    from sqlalchemy import select
     import app.models.job
     import app.models.llm_cache
-    import app.models.user  # noqa: F401
+    from app.models.user import User
+    from app.core.security import hash_password
     from app.db.base import Base
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+    async with async_session() as db:
+        result = await db.execute(select(User).where(User.email == "admin@gyansetu.ai"))
+        if not result.scalar_one_or_none():
+            admin = User(
+                id=str(uuid.uuid4()),
+                name="Admin",
+                email="admin@gyansetu.ai",
+                password_hash=hash_password("12345678"),
+                role="admin",
+            )
+            db.add(admin)
+            await db.commit()

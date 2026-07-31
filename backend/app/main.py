@@ -48,7 +48,19 @@ async def api_health():
 
 STATIC_DIR = Path(__file__).parent.parent / "static"
 if STATIC_DIR.is_dir():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static_files")
     app.mount("/", StaticFiles(directory=str(STATIC_DIR), html=True), name="static")
+
+    from fastapi import Request
+    from fastapi.responses import FileResponse
+
+    @app.exception_handler(404)
+    async def spa_fallback_handler(request: Request, exc):
+        if request.method == "GET" and not request.url.path.startswith("/api"):
+            index_path = STATIC_DIR / "index.html"
+            if index_path.is_file():
+                return FileResponse(index_path)
+        return {"detail": "Not found"}
 
 
 if __name__ == "__main__":
