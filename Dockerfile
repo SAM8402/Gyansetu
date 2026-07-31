@@ -33,11 +33,11 @@ COPY backend/ .
 # Ensure storage directories exist
 RUN mkdir -p /app/uploads /app/outputs /app/chroma_db /app/logs
 
-EXPOSE 8000
+EXPOSE ${PORT:-8000}
 
-# Container Healthcheck
+# Container Healthcheck (${PORT} is injected by Render; 8000 is the local fallback)
 HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:8000/api/health || exit 1
+    CMD curl -f http://localhost:${PORT:-8000}/health || exit 1
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
 
