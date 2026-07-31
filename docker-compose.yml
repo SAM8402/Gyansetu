@@ -39,6 +39,7 @@ services:
       - path: ./backend/.env
         required: false
     environment:
+      - PORT=8000
       - REDIS_URL=${REDIS_URL:-}
     depends_on:
       redis:

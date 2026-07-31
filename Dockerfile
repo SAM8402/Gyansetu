@@ -15,18 +15,17 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-# Install system dependencies: curl for healthcheck, libgomp1 for onnxruntime/chromadb
+# Install system dependencies: curl for healthcheck
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
-    libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy built frontend static files
 COPY --from=frontend-builder /app/frontend/dist /app/static
 
-# Install backend Python dependencies
-COPY backend/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install backend Python dependencies (slim build — no torch/transformers)
+COPY backend/requirements-render.txt .
+RUN pip install --no-cache-dir -r requirements-render.txt
 
 # Copy backend application source code
 COPY backend/ .
@@ -34,6 +33,7 @@ COPY backend/ .
 # Ensure storage directories exist
 RUN mkdir -p /app/uploads /app/outputs /app/chroma_db /app/logs
 
-EXPOSE 8000 10000
+EXPOSE 10000
 
-CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-10000}"]
+
