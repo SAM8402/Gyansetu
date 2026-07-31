@@ -5,11 +5,16 @@ import re
 from pathlib import Path
 from app.core.logging_config import logger
 
+import asyncio
+
 class DocumentIntelService:
     async def process(self, file_path: str, doc_type: str = "auto") -> dict:
         path = Path(file_path)
         ext = path.suffix.lower()
         logger.info("document_intel_start", file=path.name, ext=ext, doc_type=doc_type)
+        return await asyncio.to_thread(self._parse_sync, path, ext, doc_type)
+
+    def _parse_sync(self, path: Path, ext: str, doc_type: str) -> dict:
         if ext == ".pdf":
             return self._parse_pdf(path, doc_type=doc_type)
         elif ext == ".docx":

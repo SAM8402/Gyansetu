@@ -20,13 +20,18 @@ Document content:
 Focus on educational concepts relevant to: {subject} - {topic}
 """
 
+import asyncio
+
 class KnowledgeExtractorService:
     async def process(self, doc_data: dict, metadata: dict) -> dict:
         text = doc_data.get("raw_text", "")
-        docs = chunk_document(text, {"source": doc_data.get("metadata", {}).get("file_type", "unknown")})
-        retriever = HybridRetriever(docs)
-        relevant = retriever.hybrid_search(f"{metadata.get('subject', '')} {metadata.get('topic', '')} educational concepts", k=8)
+        relevant = await asyncio.to_thread(self._retrieve_sync, text, doc_data, metadata)
         context = "\n\n".join(d.page_content for d in relevant)
         prompt = EXTRACTION_PROMPT.format(context=context[:6000], subject=metadata.get("subject", "General"), topic=metadata.get("topic", "General"))
         result = await generate_json(prompt)
         return result
+
+    def _retrieve_sync(self, text: str, doc_data: dict, metadata: dict):
+        docs = chunk_document(text, {"source": doc_data.get("metadata", {}).get("file_type", "unknown")})
+        retriever = HybridRetriever(docs)
+        return retriever.hybrid_search(f"{metadata.get('subject', '')} {metadata.get('topic', '')} educational concepts", k=8)
