@@ -18,7 +18,14 @@ class Settings:
 
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
     GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    # gemini-embedding-001 is the only embedding model these keys support;
+    # output_dimensionality (EMBEDDING_DIMENSION) matches the local model's
+    # output size so both backends share one Chroma collection safely.
     GEMINI_EMBEDDING_MODEL = os.getenv("GEMINI_EMBEDDING_MODEL", "gemini-embedding-001")
+    LOCAL_EMBEDDING_MODEL = os.getenv(
+        "LOCAL_EMBEDDING_MODEL", "sentence-transformers/all-mpnet-base-v2"
+    )
+    EMBEDDING_DIMENSION = int(os.getenv("EMBEDDING_DIMENSION", "768"))
     LLM_FALLBACK_CHAIN = os.getenv("LLM_FALLBACK_CHAIN", "")
 
     CHROMA_PERSIST_DIR = os.getenv("CHROMA_PERSIST_DIR", "./chroma_db")

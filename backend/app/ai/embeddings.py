@@ -15,13 +15,15 @@ class LocalEmbeddings(Embeddings):
         try:
             from langchain_community.embeddings import HuggingFaceEmbeddings
 
-            logger.info("using_local_embedding_model", model="all-MiniLM-L6-v2")
-            self._ef = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+            logger.info(
+                "using_local_embedding_model", model=settings.LOCAL_EMBEDDING_MODEL
+            )
+            self._ef = HuggingFaceEmbeddings(model_name=settings.LOCAL_EMBEDDING_MODEL)
         except Exception as e:
             logger.warning("local_embedding_fallback_activated", error=str(e))
             self._ef = None
 
-    def _hash_embed(self, text: str, dim: int = 384) -> list[float]:
+    def _hash_embed(self, text: str, dim: int = 768) -> list[float]:
         import hashlib
 
         vec = [0.0] * dim
@@ -54,18 +56,24 @@ class LocalEmbeddings(Embeddings):
 
 
 class GoogleEmbeddings(Embeddings):
-    """Try every configured Google API key, then fall back to the local model."""
+    """Exactly one embedding backend is active at a time.
+
+    Google is used when any configured key answers the probe; otherwise the
+    local model is used. The inactive backend is never constructed, so only
+    one model is ever loaded in memory.
+    """
 
     def __init__(self):
         from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
         self._ef = None
-        self._local = LocalEmbeddings()
+        self._local = None
         for key in settings.api_keys:
             try:
                 ef = GoogleGenerativeAIEmbeddings(
                     model=settings.GEMINI_EMBEDDING_MODEL,
                     google_api_key=key,
+                    output_dimensionality=settings.EMBEDDING_DIMENSION,
                 )
                 probe = ef.embed_query("ping")
                 if probe:
@@ -83,6 +91,7 @@ class GoogleEmbeddings(Embeddings):
                     key_preview=key[:6] if key else "none",
                     error=str(e)[:200],
                 )
+        self._local = LocalEmbeddings()
         logger.warning("google_embedding_unavailable_using_local")
 
     @property
@@ -91,22 +100,16 @@ class GoogleEmbeddings(Embeddings):
 
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
         if self._ef:
-            try:
-                return self._ef.embed_documents(texts)
-            except Exception as e:
-                logger.warning(
-                    "google_embedding_call_failed_using_local", error=str(e)[:200]
-                )
+            return self._ef.embed_documents(texts)
+        if self._local is None:
+            raise RuntimeError("no embedding backend available")
         return self._local.embed_documents(texts)
 
     def embed_query(self, text: str) -> list[float]:
         if self._ef:
-            try:
-                return self._ef.embed_query(text)
-            except Exception as e:
-                logger.warning(
-                    "google_embedding_call_failed_using_local", error=str(e)[:200]
-                )
+            return self._ef.embed_query(text)
+        if self._local is None:
+            raise RuntimeError("no embedding backend available")
         return self._local.embed_query(text)
 
 
@@ -133,7 +136,7 @@ def chunk_document(text: str, metadata: dict | None = None) -> list[Document]:
 class HybridRetriever:
     def __init__(self, docs: list[Document]):
         self.embeddings = get_embeddings()
-        collection_name = f"hybrid_{getattr(self.embeddings, 'provider_name', 'local')}"
+        collection_name = "hybrid"
         self.vectorstore = Chroma.from_documents(
             docs,
             self.embeddings,
