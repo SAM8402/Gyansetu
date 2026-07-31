@@ -70,6 +70,9 @@ def create_initial_state() -> PipelineState:
 
 async def document_intelligence_node(state: PipelineState) -> dict:
     """Extract raw text and structure from the uploaded document."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Document Intelligence", 1, 10, 10, "Extracting text & layout...")
     from app.services.document_intel import DocumentIntelService
     result = await DocumentIntelService().process(state["file_path"])
     return {"doc_data": result, "current_stage": 1}
@@ -77,6 +80,9 @@ async def document_intelligence_node(state: PipelineState) -> dict:
 
 async def educational_classification_node(state: PipelineState) -> dict:
     """Classify the document by subject, audience, and educational level."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Educational Classification", 2, 10, 20, "Classifying subject & grade...")
     from app.services.edu_classifier import EduClassifierService
     result = await EduClassifierService().process(state["doc_data"], state["config"])
     return {"metadata": result, "current_stage": 2}
@@ -84,6 +90,9 @@ async def educational_classification_node(state: PipelineState) -> dict:
 
 async def knowledge_extraction_node(state: PipelineState) -> dict:
     """Extract structured knowledge graph from the document content."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Knowledge Extraction", 3, 10, 30, "Extracting key concepts...")
     from app.services.knowledge_extractor import KnowledgeExtractorService
     result = await KnowledgeExtractorService().process(state["doc_data"], state["metadata"])
     return {"knowledge": result, "current_stage": 3}
@@ -91,6 +100,9 @@ async def knowledge_extraction_node(state: PipelineState) -> dict:
 
 async def teaching_planning_node(state: PipelineState) -> dict:
     """Generate a high-level teaching plan based on extracted knowledge."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Teaching Planning", 4, 10, 40, "Building period lesson plan...")
     from app.services.teaching_planner import TeachingPlannerService
     result = await TeachingPlannerService().process(
         state["knowledge"], state["metadata"], state["config"]
@@ -100,6 +112,9 @@ async def teaching_planning_node(state: PipelineState) -> dict:
 
 async def content_generation_node(state: PipelineState) -> dict:
     """Produce lecture-ready content aligned with the teaching plan."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Content Generation", 5, 10, 50, "Generating lecture notes...")
     from app.services.content_generator import ContentGeneratorService
     result = await ContentGeneratorService().process(
         state["teaching_plan"],
@@ -112,6 +127,9 @@ async def content_generation_node(state: PipelineState) -> dict:
 
 async def activity_generation_node(state: PipelineState) -> dict:
     """Create interactive classroom activities and exercises."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Activity Generation", 6, 10, 60, "Generating classroom activities...")
     from app.services.activity_generator import ActivityGeneratorService
     result = await ActivityGeneratorService().process(
         state["teaching_plan"],
@@ -124,6 +142,9 @@ async def activity_generation_node(state: PipelineState) -> dict:
 
 async def assessment_generation_node(state: PipelineState) -> dict:
     """Build assessments (quizzes, assignments) from knowledge and metadata."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Assessment Generation", 7, 10, 70, "Creating quizzes & assignments...")
     from app.services.assessment_generator import AssessmentGeneratorService
     result = await AssessmentGeneratorService().process(
         state["knowledge"], state["metadata"], state["config"]
@@ -133,6 +154,9 @@ async def assessment_generation_node(state: PipelineState) -> dict:
 
 async def gap_analysis_node(state: PipelineState) -> dict:
     """Identify knowledge gaps and missing prerequisites."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Gap Analysis", 8, 10, 80, "Analyzing prerequisite gaps...")
     from app.services.gap_analyzer import GapAnalyzerService
     result = await GapAnalyzerService().process(
         state["knowledge"],
@@ -172,6 +196,10 @@ async def parallel_generation_node(state: PipelineState) -> dict:
 
 async def tkp_assembly_node(state: PipelineState) -> dict:
     """Assemble all individual stage outputs into the final TKP structure."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Validation & Assembly", 9, 10, 90, "Assembling package...")
+
     md = state.get("metadata", {})
     tp = state.get("teaching_plan", {})
     ct = state.get("content", {})
@@ -216,6 +244,9 @@ async def tkp_assembly_node(state: PipelineState) -> dict:
 
 async def validation_node(state: PipelineState) -> dict:
     """Validate the entire pipeline output for consistency and completeness."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Validation", 9, 10, 95, "Validating completeness...")
     from app.services.validator import ValidatorService
     result = await ValidatorService().process(state)
     return {"validation_report": result, "current_stage": 10}
@@ -223,6 +254,9 @@ async def validation_node(state: PipelineState) -> dict:
 
 async def publishing_node(state: PipelineState) -> dict:
     """Persist the final output and mark the pipeline as complete."""
+    if state.get("job_id"):
+        from app.services.cache_service import cache_service
+        await cache_service.publish_progress(state["job_id"], "Publishing", 10, 10, 100, "Publishing final package...")
     from app.services.publisher import PublisherService
     result = await PublisherService().process(state)
     return {"result": result, "current_stage": 11}

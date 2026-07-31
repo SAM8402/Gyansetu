@@ -10,15 +10,43 @@ from app.core.logging_config import logger
 
 class LocalEmbeddings(Embeddings):
     def __init__(self):
-        from langchain_community.embeddings import HuggingFaceEmbeddings
-        logger.info("using_local_embedding_model", model="all-MiniLM-L6-v2")
-        self._ef = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        try:
+            from langchain_community.embeddings import HuggingFaceEmbeddings
+            logger.info("using_local_embedding_model", model="all-MiniLM-L6-v2")
+            self._ef = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        except Exception as e:
+            logger.warning("local_embedding_fallback_activated", error=str(e))
+            self._ef = None
+
+    def _hash_embed(self, text: str, dim: int = 384) -> list[float]:
+        import hashlib
+        vec = [0.0] * dim
+        words = text.lower().split()
+        for w in words:
+            h = int(hashlib.md5(w.encode('utf-8')).hexdigest(), 16)
+            idx = h % dim
+            val = ((h >> 8) % 200 - 100) / 100.0
+            vec[idx] += val
+        norm = sum(x * x for x in vec) ** 0.5
+        if norm > 0:
+            vec = [x / norm for x in vec]
+        return vec
 
     def embed_documents(self, texts: list[str]) -> list[list[float]]:
-        return self._ef.embed_documents(texts)
+        if self._ef:
+            try:
+                return self._ef.embed_documents(texts)
+            except Exception:
+                pass
+        return [self._hash_embed(t) for t in texts]
 
     def embed_query(self, text: str) -> list[float]:
-        return self._ef.embed_query(text)
+        if self._ef:
+            try:
+                return self._ef.embed_query(text)
+            except Exception:
+                pass
+        return self._hash_embed(text)
 
 
 def get_embeddings() -> Embeddings:

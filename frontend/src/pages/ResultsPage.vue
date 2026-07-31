@@ -1,39 +1,39 @@
 <template>
   <div>
     <div class="flex items-center justify-between mb-6">
-      <h1 class="text-xl font-semibold">{{ tkp?.metadata?.topic || 'Results' }}</h1>
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ tkp?.metadata?.topic || 'Results' }}</h1>
       <div class="flex items-center gap-3">
-        <a v-if="tkp" :href="`/api/jobs/${$route.params.id}/tkp`" class="text-sm px-4 py-1.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 inline-block" download>Download JSON</a>
-        <button @click="handleDelete" class="text-sm px-4 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 inline-block transition">Delete Document</button>
+        <a v-if="tkp" :href="`/api/jobs/${$route.params.id}/tkp`" class="text-sm px-4 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 inline-block transition" download>Download JSON</a>
+        <button @click="handleDelete" class="text-sm px-4 py-1.5 rounded-lg border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 inline-block transition">Delete Document</button>
       </div>
     </div>
 
-    <div v-if="loading" class="border border-gray-200 rounded-lg p-6"><LoadingSkeleton height="240px" /></div>
-    <div v-else-if="!tkp" class="border border-gray-200 rounded-lg p-12 text-center text-gray-400"><p>No results yet.</p></div>
+    <div v-if="loading" class="border border-gray-200 dark:border-gray-800 rounded-lg p-6 bg-white dark:bg-gray-900"><LoadingSkeleton height="240px" /></div>
+    <div v-else-if="!tkp" class="border border-gray-200 dark:border-gray-800 rounded-lg p-12 text-center text-gray-400 dark:text-gray-500 bg-white dark:bg-gray-900"><p>No results yet.</p></div>
     <template v-else>
-      <div class="flex gap-1 mb-4 flex-wrap">
-        <button v-for="tab in tabs" :key="tab.key" :class="['text-sm px-3.5 py-1.5 rounded-lg transition', tabCls(tab.key)]" @click="activeTab = tab.key">{{ tab.label }}</button>
+      <div class="flex gap-1.5 mb-4 flex-wrap">
+        <button v-for="tab in tabs" :key="tab.key" :class="['text-sm px-3.5 py-1.5 rounded-lg transition font-medium', tabCls(tab.key)]" @click="activeTab = tab.key">{{ tab.label }}</button>
       </div>
 
-      <div class="border border-gray-200 rounded-lg p-6 min-h-[160px]">
+      <div class="border border-gray-200 dark:border-gray-800 rounded-lg p-6 min-h-[160px] bg-white dark:bg-gray-900 shadow-sm text-gray-900 dark:text-gray-100">
         <div v-if="activeTab === 'overview'">
           <div class="grid grid-cols-3 gap-4 mb-6">
-            <div><strong class="text-xs text-gray-400">Subject</strong><p class="text-sm mt-0.5">{{ tkp.metadata.subject }}</p></div>
-            <div><strong class="text-xs text-gray-400">Grade</strong><p class="text-sm mt-0.5">{{ tkp.metadata.grade }}</p></div>
-            <div><strong class="text-xs text-gray-400">Difficulty</strong><p class="text-sm mt-0.5">{{ tkp.metadata.difficulty }}</p></div>
-            <div><strong class="text-xs text-gray-400">Language</strong><p class="text-sm mt-0.5">{{ tkp.metadata.language }}</p></div>
-            <div><strong class="text-xs text-gray-400">Board</strong><p class="text-sm mt-0.5">{{ tkp.metadata.board_alignment }}</p></div>
-            <div><strong class="text-xs text-gray-400">Periods</strong><p class="text-sm mt-0.5">{{ tkp.metadata.total_periods }}</p></div>
+            <div><strong class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-0.5">Subject</strong><p class="text-sm font-medium">{{ tkp.metadata.subject }}</p></div>
+            <div><strong class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-0.5">Grade</strong><p class="text-sm font-medium">{{ tkp.metadata.grade }}</p></div>
+            <div><strong class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-0.5">Difficulty</strong><p class="text-sm font-medium">{{ tkp.metadata.difficulty }}</p></div>
+            <div><strong class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-0.5">Language</strong><p class="text-sm font-medium">{{ tkp.metadata.language }}</p></div>
+            <div><strong class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-0.5">Board</strong><p class="text-sm font-medium">{{ tkp.metadata.board_alignment }}</p></div>
+            <div><strong class="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wider block mb-0.5">Periods</strong><p class="text-sm font-medium">{{ tkp.metadata.total_periods }}</p></div>
           </div>
-          <h3 class="text-sm font-semibold mb-2">Learning Objectives</h3>
-          <ul class="text-sm pl-5 space-y-1"><li v-for="o in tkp.knowledge_base?.learning_objectives" :key="o">{{ o }}</li></ul>
+          <h3 class="text-sm font-semibold mb-2 text-gray-900 dark:text-gray-100">Learning Objectives</h3>
+          <ul class="text-sm pl-5 space-y-1 list-disc text-gray-700 dark:text-gray-300"><li v-for="o in tkp.knowledge_base?.learning_objectives" :key="o">{{ o }}</li></ul>
         </div>
 
         <div v-if="activeTab === 'plans'">
-          <div v-for="p in tkp.teaching_plan?.periods" :key="p.period_number" class="mb-4 p-4 bg-gray-50 rounded-lg">
-            <h3 class="text-sm font-semibold mb-2">Period {{ p.period_number }}: {{ p.title }} ({{ p.duration_minutes }} min)</h3>
-            <p v-if="p.entry_ticket" class="text-sm text-gray-600"><strong>Entry:</strong> {{ p.entry_ticket.question }}</p>
-            <p v-if="p.exit_ticket" class="text-sm text-gray-600 mt-1"><strong>Exit:</strong> {{ p.exit_ticket.question }}</p>
+          <div v-for="p in tkp.teaching_plan?.periods" :key="p.period_number" class="mb-4 p-4 bg-gray-50 dark:bg-gray-800/60 border border-gray-100 dark:border-gray-800 rounded-lg">
+            <h3 class="text-sm font-semibold mb-2 text-gray-900 dark:text-gray-100">Period {{ p.period_number }}: {{ p.title }} ({{ p.duration_minutes }} min)</h3>
+            <p v-if="p.entry_ticket" class="text-sm text-gray-600 dark:text-gray-300"><strong>Entry:</strong> {{ p.entry_ticket.question }}</p>
+            <p v-if="p.exit_ticket" class="text-sm text-gray-600 dark:text-gray-300 mt-1"><strong>Exit:</strong> {{ p.exit_ticket.question }}</p>
           </div>
         </div>
 
@@ -84,7 +84,11 @@ const tabs = [
   { key: 'assessments', label: 'Assessments' }, { key: 'activities', label: 'Activities' },
   { key: 'gaps', label: 'Gaps' }, { key: 'validation', label: 'Validation' },
 ]
-function tabCls(key) { return activeTab.value === key ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }
+function tabCls(k) {
+  return activeTab.value === k
+    ? 'bg-blue-600 text-white shadow-sm'
+    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+}
 function diffCls(d) { return { easy: 'bg-green-100 text-green-700', medium: 'bg-yellow-100 text-yellow-700', hard: 'bg-red-100 text-red-700' }[d] || '' }
 
 async function handleDelete() {

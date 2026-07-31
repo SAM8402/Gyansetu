@@ -9,7 +9,7 @@ class PublisherService:
         tkp = state.get("tkp") or self._assemble_tkp(state)
         vr = state.get("validation_report", {})
         tkp["validation_report"] = vr
-        output_dir = Path(settings.OUTPUT_DIR)
+        output_dir = Path(settings.OUTPUT_DIR).resolve()
         output_dir.mkdir(parents=True, exist_ok=True)
         filename = f"tkp_{state['job_id']}.json"
         filepath = output_dir / filename
