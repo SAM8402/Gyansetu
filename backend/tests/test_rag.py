@@ -45,7 +45,7 @@ def mock_embeddings():
 
 @pytest.fixture
 def mock_chroma():
-    with patch("app.ai.embeddings.Chroma.from_documents") as m:
+    with patch("langchain_chroma.Chroma.from_documents") as m:
         vs = MagicMock()
         vs.similarity_search.return_value = [
             Document(page_content="Matrices are rectangular arrays of numbers."),
@@ -157,7 +157,7 @@ class TestHybridRetrieverWithRealData:
         assert len(docs) >= 1
 
         with (
-            patch("app.ai.embeddings.Chroma.from_documents") as mock_chroma,
+            patch("langchain_chroma.Chroma.from_documents") as mock_chroma,
             patch("app.ai.embeddings.BM25Okapi") as mock_bm25,
         ):
             vs = MagicMock()
