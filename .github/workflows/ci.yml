@@ -16,24 +16,14 @@ jobs:
     name: Backend Lint & Pytest Suite
     runs-on: ubuntu-latest
 
-    services:
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
+    # No external services: tests run on the built-in fakeredis/in-memory
+    # backend, matching free deployments (no Redis required).
     env:
       SECRET_KEY: ci-test-secret-key-at-least-32-bytes-long
       GOOGLE_API_KEY: ci-mock-key-1,ci-mock-key-2
       GEMINI_MODEL: gemini-2.0-flash
       LLM_FALLBACK_CHAIN: gemini-2.0-flash,gemini-1.5-flash
       DATABASE_URL: sqlite+aiosqlite:///./ci_test.db
-      REDIS_URL: redis://localhost:6379/0
       JWT_ALGORITHM: HS256
       ACCESS_TOKEN_EXPIRE_MINUTES: 60
 
@@ -101,6 +91,9 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Validate Compose File
+        run: docker compose config --quiet
 
       - name: Validate Multi-Stage Docker Compose Build
         run: docker compose build

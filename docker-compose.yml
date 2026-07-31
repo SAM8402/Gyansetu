@@ -1,7 +1,17 @@
 services:
-  # Optional: the app auto-falls back to a built-in in-memory cache when
-  # REDIS_URL is empty/unreachable, so this service is a dev convenience only.
+  # ONE compose file for both deployment modes:
+  #
+  #   Free deploy (default):  docker compose up -d --build
+  #     -> app only, NO Redis. The app auto-falls back to built-in fakeredis
+  #        (with a dependency-free InMemoryRedis fallback) when REDIS_URL is
+  #        empty. Single worker is required for in-memory pub/sub (SSE
+  #        progress) - the default command already runs with --workers 1.
+  #
+  #   Dev with Redis:         REDIS_URL=redis://redis:6379/0 docker compose --profile dev up -d --build
+  #     -> additionally starts the redis service below (dev convenience only).
+
   redis:
+    profiles: ["dev"]
     image: redis:7-alpine
     container_name: gyansetu_redis
     ports:
@@ -25,10 +35,11 @@ services:
     env_file:
       - ./backend/.env
     environment:
-      - REDIS_URL=redis://redis:6379/0
+      - REDIS_URL=${REDIS_URL:-}
     depends_on:
       redis:
         condition: service_healthy
+        required: false
     volumes:
       - chroma_data:/app/chroma_db
       - uploads_data:/app/uploads
@@ -45,4 +56,3 @@ volumes:
   chroma_data:
   uploads_data:
   outputs_data:
-
