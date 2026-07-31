@@ -387,7 +387,5 @@ uploads/*
 *.png
 *sqlite3
 
-! README.md
-! LICENSE
-! requirements.txt
 *.md
+!README.md
