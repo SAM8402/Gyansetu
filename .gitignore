@@ -377,6 +377,10 @@ uploads/*
 /AURA/*  
 *.bin
 *.json
+# Frontend manifests must be tracked: CI needs them for npm ci and
+# the setup-node dependency cache (frontend/package-lock.json).
+!frontend/package.json
+!frontend/package-lock.json
 *.png
 *sqlite3
 
