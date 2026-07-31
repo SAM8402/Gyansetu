@@ -8,10 +8,10 @@
         </p>
       </div>
       <div class="flex items-center gap-3">
-        <a v-if="tkp" :href="`/api/jobs/${$route.params.id}/tkp`" class="text-sm px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-sm transition inline-flex items-center gap-1.5" download>
+        <button v-if="tkp" @click="downloadJson" class="text-sm px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-sm transition inline-flex items-center gap-1.5 cursor-pointer">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
           Download TKP JSON
-        </a>
+        </button>
         <button @click="handleDelete" class="text-sm px-4 py-2 rounded-lg border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 font-medium transition">Delete</button>
       </div>
     </div>
@@ -293,6 +293,17 @@ function tabCls(k) {
 function diffCls(d) { return { easy: 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300', medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300', hard: 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300' }[d] || '' }
 
 function sevCls(s) { return { low: 'bg-green-100 text-green-700', medium: 'bg-yellow-100 text-yellow-700', high: 'bg-red-100 text-red-700' }[s] || 'bg-gray-100 text-gray-600' }
+
+function downloadJson() {
+  if (!tkp.value) return
+  const blob = new Blob([JSON.stringify(tkp.value, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `tkp_${route.params.id}.json`
+  a.click()
+  URL.revokeObjectURL(url)
+}
 
 async function handleDelete() {
   if (confirm('Are you sure you want to delete this document?')) {
