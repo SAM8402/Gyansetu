@@ -15,9 +15,10 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-# Install system dependencies if required for PyMuPDF/ChromaDB
+# Install system dependencies: curl for healthcheck, libgomp1 for onnxruntime/chromadb
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
+    libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy built frontend static files
@@ -33,7 +34,7 @@ COPY backend/ .
 # Ensure storage directories exist
 RUN mkdir -p /app/uploads /app/outputs /app/chroma_db /app/logs
 
-EXPOSE ${PORT:-8000}
+EXPOSE 8000
 
 # Container Healthcheck (${PORT} is injected by Render; 8000 is the local fallback)
 HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \

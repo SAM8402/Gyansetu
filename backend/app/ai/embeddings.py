@@ -1,4 +1,3 @@
-from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -135,6 +134,8 @@ def chunk_document(text: str, metadata: dict | None = None) -> list[Document]:
 
 class HybridRetriever:
     def __init__(self, docs: list[Document]):
+        from langchain_chroma import Chroma
+
         self.embeddings = get_embeddings()
         collection_name = "hybrid"
         self.vectorstore = Chroma.from_documents(

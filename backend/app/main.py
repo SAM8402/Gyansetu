@@ -35,14 +35,20 @@ app.include_router(upload.router)
 app.include_router(jobs.router)
 app.include_router(stream.router)
 
-STATIC_DIR = Path(__file__).parent.parent.parent / "static"
-if STATIC_DIR.is_dir():
-    app.mount("/", StaticFiles(directory=str(STATIC_DIR), html=True), name="static")
-
 
 @app.get("/health")
 async def health():
     return {"status": "ok", "app": settings.APP_NAME}
+
+
+@app.get("/api/health", include_in_schema=False)
+async def api_health():
+    return {"status": "ok", "app": settings.APP_NAME}
+
+
+STATIC_DIR = Path(__file__).parent.parent / "static"
+if STATIC_DIR.is_dir():
+    app.mount("/", StaticFiles(directory=str(STATIC_DIR), html=True), name="static")
 
 
 if __name__ == "__main__":

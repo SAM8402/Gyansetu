@@ -1,0 +1,20 @@
+.git
+.gitignore
+**/__pycache__
+**/*.pyc
+*.md
+
+# Secrets — never baked into the image
+.env
+backend/.env
+
+# Local runtime data
+backend/chroma_db
+backend/uploads
+backend/outputs
+backend/logs
+backend/app.db
+backend/*.db
+
+# Frontend deps (built inside the Dockerfile)
+frontend/node_modules

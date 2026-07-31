@@ -11,7 +11,6 @@ from app.models.user import User
 from app.core.config import settings
 from app.core.logging_config import logger
 from app.services.cache_service import cache_service
-from app.ai.pipeline import build_pipeline, create_initial_state
 from app.ai.runner import run_pipeline
 
 router = APIRouter(prefix="/api", tags=["upload"])

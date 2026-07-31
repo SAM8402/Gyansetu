@@ -2,14 +2,15 @@ import asyncio
 import hashlib
 import json
 from typing import Optional
-from langchain_google_genai import ChatGoogleGenerativeAI
 from app.core.config import settings
 from app.core.logging_config import logger
 
 _llm_instances = {}
 
 
-def _build_llm(model: str, api_key: str, temperature: float) -> ChatGoogleGenerativeAI:
+def _build_llm(model: str, api_key: str, temperature: float):
+    from langchain_google_genai import ChatGoogleGenerativeAI
+
     return ChatGoogleGenerativeAI(
         model=model,
         temperature=temperature,
@@ -19,7 +20,7 @@ def _build_llm(model: str, api_key: str, temperature: float) -> ChatGoogleGenera
     )
 
 
-async def get_llm(temperature: float = 0.3, model: Optional[str] = None) -> ChatGoogleGenerativeAI:
+async def get_llm(temperature: float = 0.3, model: Optional[str] = None) -> "ChatGoogleGenerativeAI":
     model_name = model or settings.GEMINI_MODEL
     cache_key = f"{model_name}:{temperature}"
     if cache_key in _llm_instances:
