@@ -1,9 +1,12 @@
 import asyncio
 import hashlib
 import json
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 from app.core.config import settings
 from app.core.logging_config import logger
+
+if TYPE_CHECKING:
+    from langchain_google_genai import ChatGoogleGenerativeAI
 
 _llm_instances = {}
 
