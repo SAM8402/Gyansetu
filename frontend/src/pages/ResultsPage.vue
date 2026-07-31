@@ -268,6 +268,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useJobsStore } from '../stores/jobs'
+import { downloadTkp } from '../api/jobs'
 import LoadingSkeleton from '../components/common/LoadingSkeleton.vue'
 
 const route = useRoute()
@@ -304,7 +305,7 @@ onMounted(async () => {
   try {
     const job = await fetchJob(route.params.id)
     if (job.status === 'completed') {
-      const { data } = await import('../api/jobs').then(m => m.downloadTkp(route.params.id))
+      const { data } = await downloadTkp(route.params.id)
       tkp.value = data
     }
   } finally { loading.value = false }
