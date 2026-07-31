@@ -7,11 +7,30 @@
         <input type="file" @change="onFileChange" accept=".pdf,.docx,.pptx,.txt" class="text-sm text-gray-700 dark:text-gray-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 dark:file:bg-blue-950/60 dark:file:text-blue-300 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/60 cursor-pointer" />
       </div>
       <div class="mb-4">
+        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5 block">Document Structure Type (Cost-Aware Parsing)</label>
+        <select v-model="docType" class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 text-sm w-full outline-none focus:border-blue-500 dark:focus:border-blue-400 transition">
+          <option value="auto">Auto-detect (System Decides)</option>
+          <option value="mostly_text">Mostly Text (Lightweight Parsing)</option>
+          <option value="tables">Text with Tables</option>
+          <option value="diagrams_equations">Text with Diagrams / Equations</option>
+          <option value="scanned">Scanned PDF / Image Heavy</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5 block">Desired Teaching Style</label>
+        <select v-model="teachingStyle" class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 text-sm w-full outline-none focus:border-blue-500 dark:focus:border-blue-400 transition">
+          <option>Interactive & Activity-Driven</option>
+          <option>Direct Instruction & Structured</option>
+          <option>Socratic & Inquiry-Based</option>
+          <option>Concept & Problem-Solving Focused</option>
+        </select>
+      </div>
+      <div class="mb-4">
         <label class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5 block">Period duration (minutes)</label>
         <input v-model.number="periodDuration" type="number" min="20" max="120" class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 text-sm w-full outline-none focus:border-blue-500 dark:focus:border-blue-400 transition" />
       </div>
       <div class="mb-4">
-        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5 block">Number of periods (0 = auto)</label>
+        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5 block">Number of periods (0 = flexible / auto-calculated)</label>
         <input v-model.number="numPeriods" type="number" min="0" max="20" class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-3 py-2 text-sm w-full outline-none focus:border-blue-500 dark:focus:border-blue-400 transition" />
       </div>
       <div class="mb-4">
@@ -38,7 +57,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { uploadDocument } from '../api/upload'
 const router = useRouter()
-const file = ref(null), periodDuration = ref(40), numPeriods = ref(0), targetLanguage = ref('English'), boardAlignment = ref('General'), uploading = ref(false), error = ref('')
+const file = ref(null), periodDuration = ref(40), numPeriods = ref(0), docType = ref('auto'), teachingStyle = ref('Interactive & Activity-Driven'), targetLanguage = ref('English'), boardAlignment = ref('General'), uploading = ref(false), error = ref('')
 function onFileChange(e) { file.value = e.target.files[0] }
 async function handleUpload() {
   if (!file.value) return; uploading.value = true; error.value = ''
@@ -46,6 +65,8 @@ async function handleUpload() {
   fd.append('file', file.value)
   fd.append('period_duration', periodDuration.value)
   fd.append('num_periods', numPeriods.value)
+  fd.append('doc_type', docType.value)
+  fd.append('teaching_style', teachingStyle.value)
   fd.append('target_language', targetLanguage.value)
   fd.append('board_alignment', boardAlignment.value)
   try {

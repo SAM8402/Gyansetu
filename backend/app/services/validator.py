@@ -29,6 +29,16 @@ class ValidatorService:
             if not p.get("learning_objectives"):
                 report["consistency_issues"].append(f"Period {i+1} missing learning objectives")
                 report["completeness_score"] -= 0.05
+        raw_text = state.get("doc_data", {}).get("raw_text", "").lower()
+        if raw_text:
+            for c in kb.get("concepts", []):
+                name = c.get("name", "").lower()
+                if name and name not in raw_text:
+                    # Check key terms in the concept name
+                    terms = [t for t in name.split() if len(t) > 3]
+                    if terms and not any(t in raw_text for t in terms):
+                        report["hallucination_flags"].append(f"Concept '{c.get('name')}' may extend beyond primary document scope")
+
         if not tkp.get("assessments"):
             report["missing_elements"].append("assessments")
             report["completeness_score"] -= 0.15
@@ -37,5 +47,5 @@ class ValidatorService:
             report["completeness_score"] -= 0.1
         report["completeness_score"] = max(0.0, round(report["completeness_score"], 2))
         report["schema_valid"] = report["completeness_score"] >= 0.5
-        logger.info("validation_complete", score=report["completeness_score"], issues=len(report["consistency_issues"]))
+        logger.info("validation_complete", score=report["completeness_score"], issues=len(report["consistency_issues"]), hallucinations=len(report["hallucination_flags"]))
         return report

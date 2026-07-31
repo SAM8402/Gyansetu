@@ -74,7 +74,8 @@ async def document_intelligence_node(state: PipelineState) -> dict:
         from app.services.cache_service import cache_service
         await cache_service.publish_progress(state["job_id"], "Document Intelligence", 1, 10, 10, "Extracting text & layout...")
     from app.services.document_intel import DocumentIntelService
-    result = await DocumentIntelService().process(state["file_path"])
+    doc_type = state.get("config", {}).get("doc_type", "auto")
+    result = await DocumentIntelService().process(state["file_path"], doc_type=doc_type)
     return {"doc_data": result, "current_stage": 1}
 
 

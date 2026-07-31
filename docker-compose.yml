@@ -1,4 +1,6 @@
 services:
+  # Optional: the app auto-falls back to a built-in in-memory cache when
+  # REDIS_URL is empty/unreachable, so this service is a dev convenience only.
   redis:
     image: redis:7-alpine
     container_name: gyansetu_redis

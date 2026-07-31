@@ -26,4 +26,6 @@ class EduClassifierService:
             result["language"] = config["target_language"]
         if config.get("board_alignment"):
             result["board_alignment"] = config["board_alignment"]
+        if config.get("teaching_style"):
+            result["teaching_style"] = config["teaching_style"]
         return result

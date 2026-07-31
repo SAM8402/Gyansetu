@@ -22,6 +22,8 @@ async def upload_document(
     file: UploadFile = File(...),
     period_duration: int = Form(40),
     num_periods: int = Form(0),
+    doc_type: str = Form("auto"),
+    teaching_style: str = Form("Interactive & Activity-Driven"),
     target_language: str = Form("English"),
     board_alignment: str = Form("General"),
     current_user: User = Depends(get_current_user),
@@ -42,6 +44,8 @@ async def upload_document(
     config = {
         "period_duration": period_duration,
         "num_periods": num_periods,
+        "doc_type": doc_type,
+        "teaching_style": teaching_style,
         "target_language": target_language,
         "board_alignment": board_alignment,
     }

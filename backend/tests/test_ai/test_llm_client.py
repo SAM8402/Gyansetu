@@ -1,14 +1,19 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import pytest
+
+from app.ai.llm_client import generate_json, get_llm, hash_prompt
 from app.core.config import settings
-from app.ai.llm_client import get_llm, generate_json, hash_prompt
 
 
 @pytest.fixture(autouse=True)
 def clear_llm_cache():
     from app.ai.llm_client import _llm_instances
+    from app.services.cache_service import cache_service
+
     _llm_instances.clear()
+    cache_service.redis = None
+    cache_service._fake_server = None
 
 
 @pytest.fixture

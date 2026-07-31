@@ -1,6 +1,6 @@
 import json
 import os
-from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,7 +9,8 @@ load_dotenv()
 class Settings:
     APP_NAME = os.getenv("APP_NAME", "Teacher AI Platform")
     DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./app.db")
-    REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+    # Empty string = in-memory cache mode (no external Redis needed).
+    REDIS_URL = os.getenv("REDIS_URL", "")
     JWT_SECRET_KEY = os.getenv("SECRET_KEY", "change-in-production")
     JWT_ALGORITHM = os.getenv("ALGORITHM", "HS256")
     ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60"))

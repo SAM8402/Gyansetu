@@ -79,7 +79,7 @@ async def sse_progress_generator(
                             if job.status == "completed":
                                 yield await sse_event("complete", {
                                     "job_id": job_id,
-                                    "tkp_url": job.tkp_path,
+                                    "tkp_url": f"/api/jobs/{job_id}/tkp",
                                     "done": True
                                 })
                             else:
