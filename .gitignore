@@ -381,6 +381,9 @@ uploads/*
 # the setup-node dependency cache (frontend/package-lock.json).
 !frontend/package.json
 !frontend/package-lock.json
+# Runtime artifacts intentionally kept on GitHub (demo/CI seeding).
+!backend/app.db
+!backend/outputs/*
 *.png
 *sqlite3
 
