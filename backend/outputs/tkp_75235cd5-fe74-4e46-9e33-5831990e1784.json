@@ -1,0 +1,600 @@
+{
+  "metadata": {
+    "document_title": "75235cd5-fe74-4e46-9e33-5831990e1784.pdf",
+    "subject": "Biology",
+    "grade": "10",
+    "difficulty": "intermediate",
+    "topic": "Principles of Inheritance and Genetics",
+    "chapter": "Genetics",
+    "category": "STEM",
+    "language": "English",
+    "board_alignment": "CBSE",
+    "total_periods": 3,
+    "period_duration_minutes": 40,
+    "generated_at": "2026-07-30T21:59:46.992525+00:00"
+  },
+  "knowledge_base": {
+    "learning_objectives": [
+      "Understand the fundamental principles of heredity and genetics.",
+      "Define key genetic terminology including genes, alleles, genotype, and phenotype.",
+      "Explain Mendel's three laws of inheritance.",
+      "Perform and interpret monohybrid crosses using Punnett squares.",
+      "Calculate genotypic and phenotypic ratios in F1 and F2 generations."
+    ],
+    "prerequisites": [
+      "Basic understanding of cell biology",
+      "Familiarity with the concept of reproduction",
+      "Basic algebraic ratios"
+    ],
+    "concepts": [
+      {
+        "name": "Mendelian Inheritance",
+        "definition": "The patterns of inheritance discovered by Gregor Mendel regarding how traits are passed from parents to offspring.",
+        "explanation": "Mendel proposed that traits are determined by discrete units (genes) that segregate and assort independently during gamete formation.",
+        "examples": [
+          "Tall vs Dwarf pea plants"
+        ],
+        "source_reference": "Mendel's Laws of Inheritance"
+      },
+      {
+        "name": "Monohybrid Cross",
+        "definition": "A genetic cross between parents that differ in only one trait.",
+        "explanation": "Used to observe the inheritance pattern of a single gene, typically resulting in a 3:1 phenotypic ratio in the F2 generation for dominant-recessive traits.",
+        "examples": [
+          "Crossing TT with tt"
+        ],
+        "source_reference": "Monohybrid Cross Example"
+      }
+    ],
+    "definitions": [
+      {
+        "term": "Gene",
+        "definition": "Functional unit of heredity that determines a specific trait."
+      },
+      {
+        "term": "Alleles",
+        "definition": "Alternative forms of a gene."
+      },
+      {
+        "term": "Phenotype",
+        "definition": "Observable physical manifestation of a trait."
+      },
+      {
+        "term": "Genotype",
+        "definition": "Genetic makeup of an organism."
+      },
+      {
+        "term": "Homozygous",
+        "definition": "Having identical alleles for a single trait."
+      },
+      {
+        "term": "Heterozygous",
+        "definition": "Having two different alleles for a trait."
+      }
+    ],
+    "formulae": [
+      {
+        "formula": "Genotypic Ratio (F2)",
+        "description": "1 TT : 2 Tt : 1 tt"
+      },
+      {
+        "formula": "Phenotypic Ratio (F2)",
+        "description": "3 Tall : 1 Dwarf"
+      }
+    ],
+    "keywords": [
+      "Genetics",
+      "Heredity",
+      "Mendel",
+      "Alleles",
+      "Punnett Square",
+      "Dominance",
+      "Segregation"
+    ],
+    "applications": [
+      "Predicting inheritance patterns in offspring",
+      "Agricultural breeding programs",
+      "Understanding genetic variation in populations"
+    ],
+    "common_misconceptions": [
+      {
+        "misconception": "Dominant traits are always the most common in a population.",
+        "correct_understanding": "Dominance refers only to the expression of the allele over the recessive one in a heterozygote, not the frequency of the trait in a population.",
+        "why_students_think_this": "Confusion between the term 'dominant' in genetics and the common English usage of the word implying 'most frequent' or 'strongest'."
+      }
+    ]
+  },
+  "teaching_plan": {
+    "periods": [
+      {
+        "period_number": 1,
+        "title": "Introduction to Genetics and Key Terminology",
+        "duration_minutes": 40,
+        "learning_objectives": [
+          "Understand the fundamental principles of heredity",
+          "Define key genetic terminology including genes, alleles, genotype, and phenotype"
+        ],
+        "key_concepts": [
+          "Heredity",
+          "Genes",
+          "Alleles",
+          "Genotype vs Phenotype",
+          "Dominant and Recessive traits"
+        ],
+        "activities_summary": "Interactive lecture introducing Gregor Mendel as the father of genetics, followed by a 'Trait Inventory' activity where students identify their own observable phenotypes to understand the difference between genotype and phenotype.",
+        "assessment_strategy": "Exit ticket quiz defining key terms (gene, allele, homozygous, heterozygous).",
+        "entry_ticket": {
+          "question": "Why do you look similar to your parents, but not exactly like them? Write one sentence.",
+          "purpose": "To activate prior knowledge about inheritance and spark curiosity about biological variation."
+        },
+        "teacher_script": "Welcome class! Today we begin our journey into Genetics—the study of heredity. Have you ever wondered why you have your mother's eye color but your father's hair texture? It all comes down to the 'instruction manual' inside your cells. Think of your DNA as a library. A 'gene' is a specific book in that library that codes for a trait, like height. An 'allele' is a specific version of that book—maybe the 'tall' version or the 'short' version. Your 'genotype' is the combination of books you carry, while your 'phenotype' is what you actually look like on the outside. Some alleles are 'dominant,' meaning they show up even if you only have one copy, while 'recessive' alleles only show up if you have two copies. Let’s dive into these definitions.",
+        "blackboard_notes": "Genetics: The study of heredity.\n1. Gene: Segment of DNA that codes for a trait.\n2. Allele: Different forms of a gene (e.g., Blue vs. Brown eyes).\n3. Genotype: The genetic makeup (e.g., BB, Bb, bb).\n4. Phenotype: The physical expression (e.g., Brown eyes).\n5. Dominant: Expressed if at least one allele is present (Capital letter: B).\n6. Recessive: Expressed only if two copies are present (Lowercase letter: b).",
+        "checkpoint_questions": [
+          {
+            "question": "If a gene is a book, what is an allele?",
+            "expected_answer": "An allele is a specific version or variation of that gene."
+          },
+          {
+            "question": "What is the difference between genotype and phenotype?",
+            "expected_answer": "Genotype is the genetic code (the letters), while phenotype is the physical trait you see."
+          }
+        ],
+        "exit_ticket": {
+          "question": "If 'B' is the dominant allele for brown eyes and 'b' is the recessive allele for blue eyes, what is the phenotype of an individual with the genotype 'bb'?",
+          "expected_answer": "Blue eyes."
+        },
+        "homework": {
+          "description": "Review the definitions and apply them to real-world traits.",
+          "questions": [
+            "List three traits you have that you think might be inherited from your parents.",
+            "Define 'homozygous' and 'heterozygous' using your textbook or online resources.",
+            "If a dominant trait is represented by 'A', write the three possible genotypes for an individual."
+          ]
+        },
+        "mentor_moment": {
+          "anecdote": "Gregor Mendel, the father of genetics, was a monk who spent his time in a garden breeding pea plants.",
+          "connection_to_topic": "He didn't have microscopes or computers; he used simple observation and math to discover the laws of inheritance that we still use today. It shows that great science starts with careful observation."
+        },
+        "classroom_activities": [
+          {
+            "type": "Think-Pair-Share",
+            "title": "The Genetic Traits Inventory",
+            "duration_minutes": 15,
+            "materials_needed": [
+              "Trait checklist handout",
+              "Whiteboard"
+            ],
+            "teacher_instructions": "Distribute the trait checklist (e.g., tongue rolling, widow's peak, attached earlobes). Ask students to mark their own traits. Facilitate a brief class tally on the whiteboard to visualize variation.",
+            "student_instructions": "First, think about your own physical traits and check them off on the list. Second, pair up with a neighbor to compare your results. Finally, share with the class why you think you and your partner have different traits despite being the same species.",
+            "success_criteria": "Students can identify at least three physical traits and explain that variation exists within a population."
+          },
+          {
+            "type": "Group Discussion",
+            "title": "Terminology Matching Challenge",
+            "duration_minutes": 25,
+            "materials_needed": [
+              "Flashcards with terms (Genotype, Phenotype, Allele, Gene, Homozygous, Heterozygous)",
+              "Definition cards"
+            ],
+            "teacher_instructions": "Divide students into small groups. Provide each group with a set of shuffled term cards and definition cards. Circulate the room to clarify misconceptions as they attempt to match them correctly.",
+            "student_instructions": "Work in your group to match each genetic term to its correct definition. Once matched, create one original example for each term (e.g., for 'Phenotype', write 'Blue eyes'). Be prepared to present one term to the class.",
+            "success_criteria": "Students correctly match all six key terms to their definitions and provide a valid example for each."
+          }
+        ]
+      },
+      {
+        "period_number": 2,
+        "title": "Mendel's Laws of Inheritance",
+        "duration_minutes": 40,
+        "learning_objectives": [
+          "Explain Mendel's three laws of inheritance: Law of Dominance, Law of Segregation, and Law of Independent Assortment"
+        ],
+        "key_concepts": [
+          "Law of Dominance",
+          "Law of Segregation",
+          "Law of Independent Assortment"
+        ],
+        "activities_summary": "Visual presentation of Mendel’s pea plant experiments. Students participate in a simulation activity using colored beads to represent alleles to model how they segregate during gamete formation.",
+        "assessment_strategy": "Think-Pair-Share session where students explain each of Mendel's laws in their own words.",
+        "entry_ticket": {
+          "question": "If a pea plant has the genotype 'Tt' (T=tall, t=dwarf), what will its phenotype be and why?",
+          "purpose": "To assess prior knowledge of dominant and recessive traits from the previous lesson."
+        },
+        "teacher_script": "Welcome back, class. Today we decode the 'rules' of heredity. Gregor Mendel didn't just observe plants; he formulated three fundamental laws. First, the Law of Dominance: in a heterozygote, one trait masks the other. Second, the Law of Segregation: during gamete formation, the two alleles for a trait separate, so each gamete carries only one. Finally, the Law of Independent Assortment: genes for different traits (like seed color and shape) sort independently of each other during meiosis. Think of it as a biological shuffle—the inheritance of one trait doesn't influence the inheritance of another.",
+        "blackboard_notes": "Mendel's Laws of Inheritance:\n1. Law of Dominance: Dominant allele masks recessive (e.g., T > t).\n2. Law of Segregation: Alleles separate during meiosis; each gamete gets one allele.\n3. Law of Independent Assortment: Genes for different traits segregate independently (Dihybrid cross).\nKey Terms: Allele, Gamete, Genotype, Phenotype, Homozygous, Heterozygous.",
+        "checkpoint_questions": [
+          {
+            "question": "During which phase of meiosis does the Law of Segregation occur?",
+            "expected_answer": "Anaphase I, when homologous chromosomes separate."
+          },
+          {
+            "question": "Why does the Law of Independent Assortment only apply to genes on different chromosomes?",
+            "expected_answer": "Because genes on the same chromosome are linked and tend to be inherited together."
+          }
+        ],
+        "exit_ticket": {
+          "question": "In your own words, explain why a parent with genotype 'AaBb' can produce four different types of gametes (AB, Ab, aB, ab).",
+          "expected_answer": "Due to the Law of Independent Assortment, the alleles for gene A and gene B separate and recombine randomly during gamete formation."
+        },
+        "homework": {
+          "description": "Complete a Punnett square for a dihybrid cross between two heterozygous pea plants (RrYy x RrYy).",
+          "questions": [
+            "What is the phenotypic ratio of the F2 generation in a dihybrid cross?",
+            "How does the Law of Segregation prevent the doubling of chromosomes in every generation?",
+            "Define 'test cross' and explain how it helps determine an unknown genotype."
+          ]
+        },
+        "mentor_moment": {
+          "anecdote": "Mendel was a monk who spent years in his garden, often ignored by the scientific community of his time.",
+          "connection_to_topic": "His persistence reminds us that scientific breakthroughs often require patience and meticulous data collection, even when the world isn't ready to listen yet."
+        },
+        "classroom_activities": [
+          {
+            "type": "Think-Pair-Share",
+            "title": "Predicting Pea Plant Traits",
+            "duration_minutes": 15,
+            "materials_needed": [
+              "Whiteboard",
+              "Markers",
+              "Punnett square handouts"
+            ],
+            "teacher_instructions": "Present two scenarios: a cross between two heterozygous purple-flowered plants (Pp x Pp) and a test cross. Guide students through the Law of Segregation and Law of Independent Assortment using these examples.",
+            "student_instructions": "Think individually about the possible offspring for the given cross. Pair with a neighbor to draw the Punnett square and calculate the phenotypic ratio. Share your findings with the class.",
+            "success_criteria": "Students correctly identify the 3:1 phenotypic ratio for a monohybrid cross and explain how alleles segregate."
+          },
+          {
+            "type": "Experiment",
+            "title": "Coin Toss Genetics",
+            "duration_minutes": 25,
+            "materials_needed": [
+              "Two-sided coins",
+              "Recording sheets"
+            ],
+            "teacher_instructions": "Explain that each coin represents a parent carrying one dominant (Heads) and one recessive (Tails) allele. Supervise the simulation of 50 coin flips to model random fertilization.",
+            "student_instructions": "Flip two coins simultaneously 50 times. Record the results (HH, HT, TT) in a tally chart. Compare your experimental results to the theoretical probability predicted by a Punnett square.",
+            "success_criteria": "Students demonstrate an understanding of probability in inheritance and explain why experimental results may differ from theoretical predictions due to chance."
+          }
+        ]
+      },
+      {
+        "period_number": 3,
+        "title": "Monohybrid Crosses and Punnett Squares",
+        "duration_minutes": 40,
+        "learning_objectives": [
+          "Perform and interpret monohybrid crosses using Punnett squares",
+          "Calculate genotypic and phenotypic ratios in F1 and F2 generations"
+        ],
+        "key_concepts": [
+          "Monohybrid Cross",
+          "Punnett Square",
+          "F1 Generation",
+          "F2 Generation",
+          "Genotypic and Phenotypic Ratios"
+        ],
+        "activities_summary": "Step-by-step demonstration of setting up a Punnett square. Students practice solving monohybrid cross problems involving pea plant traits (e.g., tall vs. dwarf) and calculating the resulting ratios.",
+        "assessment_strategy": "Problem-solving worksheet requiring students to construct Punnett squares and determine the probability of specific traits in offspring.",
+        "entry_ticket": {
+          "question": "If a pea plant has the genotype 'Tt' (T = tall, t = short), what is its phenotype? Explain why.",
+          "purpose": "To assess prior knowledge of dominant and recessive alleles before introducing probability models."
+        },
+        "teacher_script": "Welcome class! Today we move from Mendel’s laws to the tool that makes them predictable: the Punnett Square. A monohybrid cross tracks one trait at a time. Imagine we cross a pure-breeding tall plant (TT) with a pure-breeding short plant (tt). All offspring in the F1 generation will be Tt. But what happens when we cross two of those F1 plants? We use a 2x2 grid to map the gametes. We place the alleles of one parent on the top and the other on the side. By filling the boxes, we reveal the probability of the F2 generation's traits. Remember: Genotype is the 'code' (letters), while Phenotype is the 'look' (physical trait). We will calculate the ratios together: 1:2:1 for genotypes and 3:1 for phenotypes.",
+        "blackboard_notes": "Monohybrid Cross: Single trait inheritance.\nPunnett Square: A grid to predict offspring probability.\n\nExample: F1 Cross (Tt x Tt)\n       T    t\n    +----+----+\n  T | TT | Tt |\n    +----+----+\n  t | Tt | tt |\n    +----+----+\n\nGenotypic Ratio: 1 TT : 2 Tt : 1 tt\nPhenotypic Ratio: 3 Tall : 1 Short",
+        "checkpoint_questions": [
+          {
+            "question": "In a Punnett square, what do the letters outside the grid represent?",
+            "expected_answer": "The alleles present in the gametes of the parents."
+          },
+          {
+            "question": "If the phenotypic ratio is 3:1, what does the '1' represent?",
+            "expected_answer": "The recessive phenotype (e.g., short plants)."
+          }
+        ],
+        "exit_ticket": {
+          "question": "Cross a heterozygous parent (Bb) with a homozygous recessive parent (bb). What percentage of offspring will show the recessive phenotype?",
+          "expected_answer": "50% (The cross results in 50% Bb and 50% bb)."
+        },
+        "homework": {
+          "description": "Practice applying Punnett squares to different traits.",
+          "questions": [
+            "Cross a homozygous dominant plant (YY) with a heterozygous plant (Yy). What are the genotypic and phenotypic ratios?",
+            "Why is the F2 generation ratio often different from the F1 generation ratio?",
+            "If a brown-eyed parent (Bb) and a blue-eyed parent (bb) have a child, what are the possible genotypes of the child?"
+          ]
+        },
+        "mentor_moment": {
+          "anecdote": "When Reginald Punnett first developed this square in the early 1900s, he was actually trying to solve a problem for a friend who was a poultry breeder wanting to predict chick colors.",
+          "connection_to_topic": "This shows that genetics isn't just abstract theory; it was born out of a practical need to predict outcomes in agriculture and biology."
+        },
+        "classroom_activities": [
+          {
+            "type": "Think-Pair-Share",
+            "title": "Predicting Pea Plant Traits",
+            "duration_minutes": 15,
+            "materials_needed": [
+              "Whiteboard",
+              "Markers",
+              "Student notebooks"
+            ],
+            "teacher_instructions": "Present a scenario of a cross between a heterozygous tall plant (Tt) and a homozygous recessive short plant (tt). Ask students to think individually, pair up to draw the Punnett square, and share their predicted phenotypic ratios.",
+            "student_instructions": "1. Think: Predict the offspring of a Tt x tt cross. 2. Pair: Draw a 2x2 Punnett square with your partner. 3. Share: Explain the probability of the offspring being tall vs. short to the class.",
+            "success_criteria": "Students correctly identify the 50% tall and 50% short phenotypic ratio."
+          },
+          {
+            "type": "Quiz Game",
+            "title": "Punnett Square Speed Round",
+            "duration_minutes": 25,
+            "materials_needed": [
+              "Mini whiteboards",
+              "Dry erase markers",
+              "List of genetic scenarios"
+            ],
+            "teacher_instructions": "Read out five different monohybrid cross scenarios (e.g., BB x Bb). Give students 3 minutes per round to solve the square and hold up their boards. Provide immediate feedback after each round.",
+            "student_instructions": "Listen to the genetic cross provided by the teacher. Quickly draw the Punnett square on your mini-board, determine the genotype and phenotype percentages, and hold your board up when time is called.",
+            "success_criteria": "Students accurately complete at least 4 out of 5 Punnett squares with correct genotype and phenotype labels."
+          }
+        ]
+      }
+    ]
+  },
+  "assessments": {
+    "mcqs": [
+      {
+        "question": "Which term describes the physical appearance or observable traits of an organism?",
+        "options": [
+          "Genotype",
+          "Phenotype",
+          "Allele",
+          "Locus"
+        ],
+        "correct_answer": "Phenotype",
+        "explanation": "Phenotype refers to the observable physical or biochemical characteristics of an organism, determined by both genetic makeup and environmental influences.",
+        "difficulty": "easy",
+        "bloom_level": "Remember"
+      },
+      {
+        "question": "What is an alternative form of a single gene called?",
+        "options": [
+          "Chromosome",
+          "Allele",
+          "Gamete",
+          "Trait"
+        ],
+        "correct_answer": "Allele",
+        "explanation": "An allele is one of two or more versions of a DNA sequence at a given genomic location.",
+        "difficulty": "easy",
+        "bloom_level": "Remember"
+      },
+      {
+        "question": "According to Mendel's Law of Segregation, what happens during gamete formation?",
+        "options": [
+          "Alleles blend together",
+          "Alleles separate from each other",
+          "Genes mutate",
+          "Chromosomes disappear"
+        ],
+        "correct_answer": "Alleles separate from each other",
+        "explanation": "The Law of Segregation states that each individual has two alleles for each trait, which segregate during the formation of gametes.",
+        "difficulty": "medium",
+        "bloom_level": "Understand"
+      },
+      {
+        "question": "In a monohybrid cross between two heterozygous (Aa) individuals, what is the expected phenotypic ratio in the F2 generation?",
+        "options": [
+          "1:2:1",
+          "3:1",
+          "9:3:3:1",
+          "1:1"
+        ],
+        "correct_answer": "3:1",
+        "explanation": "A cross between two heterozygotes (Aa x Aa) results in a 3:1 phenotypic ratio (3 dominant, 1 recessive).",
+        "difficulty": "medium",
+        "bloom_level": "Apply"
+      },
+      {
+        "question": "An organism with two identical alleles for a trait is said to be:",
+        "options": [
+          "Heterozygous",
+          "Homozygous",
+          "Dominant",
+          "Recessive"
+        ],
+        "correct_answer": "Homozygous",
+        "explanation": "Homozygous means having two identical alleles of a particular gene or genes.",
+        "difficulty": "easy",
+        "bloom_level": "Remember"
+      },
+      {
+        "question": "Mendel's Law of Independent Assortment applies to:",
+        "options": [
+          "Genes on the same chromosome",
+          "Genes on different chromosomes",
+          "Monohybrid crosses only",
+          "Asexual reproduction"
+        ],
+        "correct_answer": "Genes on different chromosomes",
+        "explanation": "The Law of Independent Assortment states that the inheritance of one trait does not influence the inheritance of another trait, provided the genes are on different chromosomes.",
+        "difficulty": "hard",
+        "bloom_level": "Understand"
+      },
+      {
+        "question": "If a plant with purple flowers (PP) is crossed with a plant with white flowers (pp), what is the genotype of the F1 generation?",
+        "options": [
+          "PP",
+          "pp",
+          "Pp",
+          "All of the above"
+        ],
+        "correct_answer": "Pp",
+        "explanation": "The P parent contributes a P allele and the p parent contributes a p allele, resulting in all heterozygous offspring (Pp).",
+        "difficulty": "medium",
+        "bloom_level": "Apply"
+      },
+      {
+        "question": "What does the 'F1' in F1 generation stand for?",
+        "options": [
+          "First Filial",
+          "First Family",
+          "First Factor",
+          "First Frequency"
+        ],
+        "correct_answer": "First Filial",
+        "explanation": "F1 stands for First Filial generation, which is the first generation of offspring from a cross between two parents.",
+        "difficulty": "easy",
+        "bloom_level": "Remember"
+      },
+      {
+        "question": "Which of the following represents a heterozygous genotype?",
+        "options": [
+          "AA",
+          "aa",
+          "Aa",
+          "AAaa"
+        ],
+        "correct_answer": "Aa",
+        "explanation": "Heterozygous means having two different alleles for a specific trait.",
+        "difficulty": "easy",
+        "bloom_level": "Understand"
+      },
+      {
+        "question": "If the dominant trait is 'Tall' (T) and the recessive is 'short' (t), what is the phenotype of a Tt plant?",
+        "options": [
+          "Short",
+          "Tall",
+          "Medium",
+          "None of the above"
+        ],
+        "correct_answer": "Tall",
+        "explanation": "In a heterozygous state, the dominant allele (T) masks the expression of the recessive allele (t).",
+        "difficulty": "medium",
+        "bloom_level": "Analyze"
+      }
+    ],
+    "short_answers": [
+      {
+        "question": "Define the term 'Genotype' and provide an example.",
+        "model_answer": "Genotype is the genetic constitution of an individual organism. Example: 'Aa' or 'BB'.",
+        "marks": 2,
+        "rubric": "1 mark for definition, 1 mark for a correct example."
+      },
+      {
+        "question": "State Mendel's Law of Dominance.",
+        "model_answer": "In a heterozygote, one trait will conceal the presence of another trait for the same characteristic. The dominant allele is expressed, while the recessive allele is masked.",
+        "marks": 2,
+        "rubric": "1 mark for mentioning dominant/recessive interaction, 1 mark for clarity."
+      },
+      {
+        "question": "Why did Mendel choose pea plants for his experiments?",
+        "model_answer": "Pea plants have easily observable traits, short generation times, and can be easily cross-pollinated or self-pollinated.",
+        "marks": 2,
+        "rubric": "1 mark for mentioning traits/ease of use, 1 mark for generation time."
+      },
+      {
+        "question": "Distinguish between a monohybrid cross and a dihybrid cross.",
+        "model_answer": "A monohybrid cross involves the study of the inheritance of one trait, whereas a dihybrid cross involves the study of two different traits simultaneously.",
+        "marks": 2,
+        "rubric": "1 mark for monohybrid definition, 1 mark for dihybrid definition."
+      },
+      {
+        "question": "What is a Punnett square used for?",
+        "model_answer": "A Punnett square is a graphical representation used to predict the probability of possible genotypes and phenotypes of offspring in a genetic cross.",
+        "marks": 2,
+        "rubric": "1 mark for identifying it as a prediction tool, 1 mark for mentioning probability/genotypes."
+      }
+    ],
+    "long_answers": [
+      {
+        "question": "Explain Mendel's three laws of inheritance in detail.",
+        "model_answer": "1. Law of Dominance: In a heterozygote, the dominant allele masks the recessive one. 2. Law of Segregation: During gamete formation, the two alleles for a trait separate so each gamete carries only one allele. 3. Law of Independent Assortment: Genes for different traits segregate independently during gamete formation.",
+        "marks": 5,
+        "rubric": "1 mark for each law correctly explained, 2 marks for overall clarity and accuracy."
+      },
+      {
+        "question": "Describe the process of performing a monohybrid cross for a heterozygous parent (Aa x Aa) and explain the resulting ratios.",
+        "model_answer": "To perform the cross, draw a 2x2 grid. Place 'A' and 'a' on the top and side. The resulting cells are AA, Aa, Aa, and aa. Genotypic ratio: 1 AA : 2 Aa : 1 aa. Phenotypic ratio: 3 dominant : 1 recessive.",
+        "marks": 5,
+        "rubric": "1 mark for setup, 1 mark for correct grid, 1 mark for genotypic ratio, 1 mark for phenotypic ratio, 1 mark for explanation."
+      },
+      {
+        "question": "Discuss the importance of genetics in understanding heredity in living organisms.",
+        "model_answer": "Genetics explains how traits are passed from parents to offspring via DNA. It helps in understanding disease inheritance, agricultural improvements through selective breeding, and the evolutionary history of species.",
+        "marks": 5,
+        "rubric": "1 mark for heredity, 1 mark for disease, 1 mark for agriculture, 1 mark for evolution, 1 mark for coherence."
+      }
+    ],
+    "numerical_problems": [
+      {
+        "question": "In pea plants, purple flowers (P) are dominant to white flowers (p). Cross a homozygous dominant plant with a homozygous recessive plant. What are the genotypes and phenotypes of the F1 generation?",
+        "solution": "Parental cross: PP x pp. Gametes: P and p. F1 offspring: All Pp. Genotype: 100% Heterozygous (Pp). Phenotype: 100% Purple.",
+        "answer": "Genotype: Pp, Phenotype: Purple",
+        "marks": 3
+      },
+      {
+        "question": "If you cross two heterozygous (Pp) purple-flowered plants, what percentage of the F2 generation is expected to have white flowers?",
+        "solution": "Cross: Pp x Pp. Punnett square results: PP, Pp, Pp, pp. The 'pp' genotype represents white flowers. This is 1 out of 4, or 25%.",
+        "answer": "25%",
+        "marks": 3
+      }
+    ]
+  },
+  "learning_gaps": [
+    {
+      "gap_id": "GAP-1",
+      "description": "Confusing the frequency of an allele in a population with its dominance status.",
+      "severity": "high",
+      "diagnostic_question": "If a specific genetic trait is dominant, does that mean it will always be the most common trait found in the human population? Explain.",
+      "expected_wrong_answer": "Yes, because dominant traits are stronger and naturally appear more frequently than recessive traits.",
+      "remedial_action": "Use examples like polydactyly (dominant but rare) vs. blood type O (recessive but common) to decouple dominance from frequency.",
+      "related_concepts": [
+        "Dominance",
+        "Allele frequency",
+        "Genotype"
+      ]
+    },
+    {
+      "gap_id": "GAP-2",
+      "description": "Inability to distinguish between genotype and phenotype, leading to errors in Punnett square interpretation.",
+      "severity": "medium",
+      "diagnostic_question": "A pea plant has the genotype 'Tt'. What is its phenotype, and how does the genotype differ from the phenotype?",
+      "expected_wrong_answer": "The phenotype is 'Tt'. The genotype is the physical appearance of the plant.",
+      "remedial_action": "Use a 'Genotype = Genetic Code, Phenotype = Physical' mnemonic and practice mapping specific letter combinations to observable traits.",
+      "related_concepts": [
+        "Genotype",
+        "Phenotype",
+        "Alleles"
+      ]
+    },
+    {
+      "gap_id": "GAP-3",
+      "description": "Misunderstanding Mendel’s Law of Independent Assortment, often assuming linked inheritance.",
+      "severity": "high",
+      "diagnostic_question": "If an organism is heterozygous for two traits (AaBb), what are the possible allele combinations in its gametes?",
+      "expected_wrong_answer": "Only AB and ab.",
+      "remedial_action": "Use FOIL (First, Outer, Inner, Last) method to demonstrate all four possible gamete combinations (AB, Ab, aB, ab).",
+      "related_concepts": [
+        "Mendel's Laws",
+        "Independent Assortment",
+        "Dihybrid Crosses"
+      ]
+    },
+    {
+      "gap_id": "GAP-4",
+      "description": "Difficulty calculating ratios in F2 generations, specifically failing to account for the heterozygous state.",
+      "severity": "medium",
+      "diagnostic_question": "In a monohybrid cross of two heterozygotes (Aa x Aa), what is the expected phenotypic ratio of the offspring?",
+      "expected_wrong_answer": "3:1 ratio of homozygous dominant to homozygous recessive.",
+      "remedial_action": "Re-teach the Punnett square grid, emphasizing that the '3' in the 3:1 ratio represents the combined total of homozygous dominant and heterozygous individuals.",
+      "related_concepts": [
+        "Monohybrid Cross",
+        "F2 Generation",
+        "Probability"
+      ]
+    }
+  ],
+  "validation_report": {
+    "schema_valid": true,
+    "completeness_score": 1.0,
+    "missing_elements": [],
+    "consistency_issues": [],
+    "hallucination_flags": []
+  }
+}
