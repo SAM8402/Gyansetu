@@ -1,0 +1,64 @@
+{
+  "metadata": {
+    "document_title": "The French Revolution",
+    "subject": "History",
+    "grade": "Grade 9",
+    "difficulty": "intermediate",
+    "topic": "The French Revolution",
+    "chapter": "Chapter 1: The French Revolution",
+    "category": "Humanities",
+    "language": "English",
+    "board_alignment": "CBSE",
+    "total_periods": 4,
+    "period_duration_minutes": 40,
+    "generated_at": "2026-07-30T10:00:00Z"
+  },
+  "knowledge_base": {
+    "learning_objectives": [
+      "Identify the causes of the French Revolution",
+      "Describe key events of the Revolution",
+      "Explain the impact of the Revolution on modern democracy"
+    ],
+    "prerequisites": ["Basic understanding of monarchy systems", "Concept of social inequality"],
+    "concepts": [
+      {"name": "Estates System", "definition": "French society was divided into three estates: clergy (First), nobility (Second), and commoners (Third)", "explanation": "The Third Estate comprised 98% of the population but had no political power, leading to resentment.", "examples": ["Clergy paid no taxes", "Nobility held all top positions", "Peasants paid all taxes"], "source_reference": "Page 1"},
+      {"name": "Storming of the Bastille", "definition": "On July 14, 1789, Parisians stormed the Bastille prison, marking the start of the Revolution", "explanation": "The Bastille symbolized royal tyranny. Its fall inspired revolutionaries across France.", "examples": [], "source_reference": "Page 3"},
+      {"name": "Reign of Terror", "definition": "A period (1793-1794) when revolutionary leader Robespierre executed thousands of perceived enemies", "explanation": "The Committee of Public Safety used the guillotine to eliminate opposition, executing ~17,000 people.", "examples": ["Marie Antoinette was executed", "Revolutionary tribunals judged quickly"], "source_reference": "Page 5"}
+    ],
+    "definitions": [{"term": "Revolution", "definition": "A forcible overthrow of a government or social order"}, {"term": "Democracy", "definition": "A system of government by the whole population through elected representatives"}, {"term": "Guillotine", "definition": "A machine used for beheading during the French Revolution"}],
+    "formulae": [],
+    "keywords": ["Revolution", "Equality", "Liberty", "Fraternity", "Bastille", "Robespierre", "Guillotine", "Estates General"],
+    "applications": ["Understanding modern democratic systems", "Analyzing social movements"],
+    "common_misconceptions": [
+      {"misconception": "The French Revolution was only about poverty", "correct_understanding": "It was driven by a combination of economic crisis, social inequality, and Enlightenment ideas", "why_students_think_this": "Textbooks emphasize economic hardship, but ideas of liberty were equally important"}
+    ]
+  },
+  "teaching_plan": {
+    "periods": [
+      {"period_number": 1, "title": "Causes of the French Revolution", "duration_minutes": 40, "learning_objectives": ["Identify social, economic, and political causes"], "entry_ticket": {"question": "What would make you want to change your government?", "purpose": "Personal connection to revolutionary ideas"}, "teacher_script": "Begin with the Three Estates system...", "blackboard_notes": "# Causes of French Revolution\n1. Social: Estates System (inequality)\n2. Economic: Bankruptcy, food shortages\n3. Political: Weak leadership of Louis XVI\n4. Intellectual: Enlightenment ideas\n", "checkpoint_questions": [{"question": "Which estate paid all taxes?", "expected_answer": "The Third Estate"}], "exit_ticket": {"question": "List two causes of the French Revolution", "expected_answer": "Social inequality and economic crisis"}, "homework": {"description": "Read about the meeting of the Estates General", "questions": ["Why did the Third Estate want voting by head rather than by estate?"]}, "mentor_moment": {"anecdote": "The philosopher Rousseau wrote 'Man is born free, but everywhere he is in chains'", "connection_to_topic": "Enlightenment ideas directly inspired revolutionary thinking"}, "classroom_activities": [{"type": "Role Play", "title": "The Estates General Debate", "duration_minutes": 15, "materials_needed": ["Role cards", "Name tags"], "teacher_instructions": "Assign students to estates and moderate a debate about tax reform", "student_instructions": "Argue for your estate's position on taxation", "success_criteria": "Students can articulate the grievances of each estate"}]},
+      {"period_number": 2, "title": "Key Events of the Revolution", "duration_minutes": 40, "learning_objectives": ["Sequence key revolutionary events"], "entry_ticket": {"question": "Why do you think the revolutionaries attacked the Bastille?", "purpose": "Lead into discussion of revolutionary symbols"}, "teacher_script": "Create a timeline of key events...", "blackboard_notes": "# Timeline: 1789-1794\n- July 14, 1789: Storming of Bastille\n- Aug 1789: Declaration of Rights of Man\n- Oct 1789: Women's March on Versailles\n- 1793-94: Reign of Terror\n", "checkpoint_questions": [{"question": "Why was the Bastille attacked?", "expected_answer": "It symbolized royal tyranny"}], "exit_ticket": {"question": "What was the Reign of Terror?", "expected_answer": "A period when Robespierre executed perceived enemies of the revolution"}, "homework": {"description": "Research one event from the timeline", "questions": ["Describe what happened and why it was significant"]}, "mentor_moment": {"anecdote": "The guillotine was actually proposed by a doctor as a 'humane' execution method", "connection_to_topic": "Shows how even good intentions can lead to terrible outcomes"}, "classroom_activities": [{"type": "Group Discussion", "title": "Was the Revolution Justified?", "duration_minutes": 12, "materials_needed": ["Discussion prompts"], "teacher_instructions": "Divide class into pro and anti-revolution groups", "student_instructions": "Debate whether the violence of the Revolution was justified", "success_criteria": "Students use historical evidence to support arguments"}]}
+    ]
+  },
+  "assessments": {
+    "mcqs": [
+      {"question": "What date is celebrated as the beginning of the French Revolution?", "options": ["July 14, 1789", "August 4, 1789", "June 20, 1789", "May 5, 1789"], "correct_answer": "July 14, 1789", "explanation": "The Storming of the Bastille on July 14 marks the beginning", "difficulty": "easy", "bloom_level": "Remember"},
+      {"question": "Which Enlightenment idea influenced the revolutionaries?", "options": ["Separation of powers", "Theory of relativity", "Evolution by natural selection", "Heliocentric model"], "correct_answer": "Separation of powers", "explanation": "Montesquieu's idea of separation of powers influenced the revolutionaries", "difficulty": "medium", "bloom_level": "Analyze"}
+    ],
+    "short_answers": [
+      {"question": "Explain the Estates System in pre-revolutionary France", "model_answer": "French society had three estates: clergy (First), nobility (Second), and commoners (Third). The Third Estate (98% of population) had no political power but paid all taxes.", "marks": 3, "rubric": "1 mark for naming all three estates, 1 mark for explaining inequality, 1 mark for mentioning tax burden"}
+    ],
+    "long_answers": [
+      {"question": "Analyze the causes and consequences of the French Revolution. Was the Revolution ultimately successful in achieving its goals?", "model_answer": "The Revolution was caused by social inequality, economic crisis, and Enlightenment ideas. It ended the monarchy, established a republic, spread nationalist ideas across Europe. In the short term it led to the Reign of Terror and Napoleon's dictatorship, but long-term it established democratic ideals that influenced revolutions worldwide.", "marks": 5, "rubric": "2 marks for causes, 2 marks for consequences, 1 mark for critical analysis"}
+    ]
+  },
+  "learning_gaps": [
+    {"gap_id": "GAP-1", "description": "Students think revolution was only about poverty", "severity": "high", "diagnostic_question": "What role did ideas play in causing the French Revolution?", "expected_wrong_answer": "Ideas didn't matter; it was about hunger", "remedial_action": "Assign reading on Enlightenment philosophers and their influence", "related_concepts": ["Enlightenment", "Causes of Revolution"]}
+  ],
+  "validation_report": {
+    "schema_valid": true,
+    "completeness_score": 1.0,
+    "missing_elements": [],
+    "consistency_issues": [],
+    "hallucination_flags": []
+  }
+}
